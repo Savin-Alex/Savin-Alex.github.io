@@ -1,0 +1,10 @@
+title: Alexander Savin
+description: Portfolio — AI Consul, Multi-Agent Pipeline, Mood&Food
+theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-feed
+header_pages:
+  - projects/ai-consul.md
+  - projects/ai-dev-pipeline.md
+  - projects/mood-food.md

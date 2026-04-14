@@ -1,0 +1,109 @@
+<svg width="960" height="440" viewBox="0 0 960 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="pipeArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94A3B8"/>
+    </marker>
+    <marker id="pipeArrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#16A34A"/>
+    </marker>
+    <marker id="pipeArrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#EF4444"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="440" rx="16" fill="#FAFBFC"/>
+
+  <text x="40" y="40" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700">Transcription pipeline with fallback</text>
+
+  <!-- Audio Input -->
+  <rect x="40" y="100" width="120" height="100" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+  <text x="60" y="140" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700">Audio</text>
+  <text x="60" y="160" fill="#6366F1" font-family="system-ui, -apple-system, sans-serif" font-size="11">Mic + System</text>
+  <text x="60" y="178" fill="#6366F1" font-family="system-ui, -apple-system, sans-serif" font-size="11">48 kHz → 16 kHz</text>
+
+  <!-- Arrow: Audio -> VAD -->
+  <path d="M160 150 L192 150" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+
+  <!-- VAD -->
+  <rect x="200" y="100" width="110" height="100" rx="10" fill="#F0FDF4" stroke="#A7F3D0" stroke-width="1.5"/>
+  <text x="220" y="140" fill="#166534" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700">VAD</text>
+  <text x="220" y="160" fill="#16A34A" font-family="system-ui, -apple-system, sans-serif" font-size="11">Energy gate</text>
+  <text x="220" y="178" fill="#16A34A" font-family="system-ui, -apple-system, sans-serif" font-size="11">Silero v6 (server)</text>
+
+  <!-- Arrow: VAD -> Router -->
+  <path d="M310 150 L342 150" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+
+  <!-- Router -->
+  <rect x="350" y="80" width="120" height="140" rx="10" fill="#FEF3C7" stroke="#FDE68A" stroke-width="1.5"/>
+  <text x="370" y="120" fill="#92400E" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700">Router</text>
+  <text x="370" y="142" fill="#B45309" font-family="system-ui, -apple-system, sans-serif" font-size="11">Streaming?</text>
+  <text x="370" y="162" fill="#B45309" font-family="system-ui, -apple-system, sans-serif" font-size="11">Batch?</text>
+  <text x="370" y="190" fill="#B45309" font-family="system-ui, -apple-system, sans-serif" font-size="11">Circuit breaker</text>
+
+  <!-- Streaming path label -->
+  <text x="510" y="96" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Streaming</text>
+
+  <!-- Arrow: Router -> Streaming engines -->
+  <path d="M470 120 L512 120" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+
+  <!-- Streaming: WhisperLiveKit -->
+  <rect x="520" y="72" width="160" height="46" rx="8" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="540" cy="95" r="5" fill="#16A34A"/>
+  <text x="554" y="92" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">WhisperLiveKit</text>
+  <text x="554" y="108" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="10">WebSocket, Python sidecar</text>
+
+  <!-- Streaming: AssemblyAI -->
+  <rect x="520" y="126" width="160" height="46" rx="8" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="540" cy="149" r="5" fill="#F59E0B"/>
+  <text x="554" y="146" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">AssemblyAI</text>
+  <text x="554" y="162" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="10">Cloud streaming</text>
+
+  <!-- Streaming: Deepgram -->
+  <rect x="520" y="180" width="160" height="46" rx="8" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="540" cy="203" r="5" fill="#F59E0B"/>
+  <text x="554" y="200" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Deepgram</text>
+  <text x="554" y="216" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="10">Cloud streaming</text>
+
+  <!-- Batch path label -->
+  <text x="510" y="260" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Batch</text>
+
+  <!-- Arrow: Router -> Batch engines -->
+  <path d="M470 190 L512 260" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+
+  <!-- Batch: whisper-native -->
+  <rect x="520" y="244" width="160" height="46" rx="8" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="540" cy="267" r="5" fill="#16A34A"/>
+  <text x="554" y="264" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">whisper.cpp</text>
+  <text x="554" y="280" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="10">Local, Metal GPU</text>
+
+  <!-- Batch: Voxtral -->
+  <rect x="520" y="298" width="160" height="46" rx="8" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <circle cx="540" cy="321" r="5" fill="#A855F7"/>
+  <text x="554" y="318" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Voxtral MLX</text>
+  <text x="554" y="334" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="10">Apple Silicon, local</text>
+
+  <!-- Arrows from engines -> Output -->
+  <path d="M680 95 L742 180" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+  <path d="M680 149 L742 180" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+  <path d="M680 203 L742 195" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+  <path d="M680 267 L742 210" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+  <path d="M680 321 L742 220" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#pipeArrow)"/>
+
+  <!-- Output: Transcript + Suggestions -->
+  <rect x="750" y="140" width="170" height="110" rx="10" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.5"/>
+  <text x="770" y="174" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700">Output</text>
+  <text x="770" y="198" fill="#6366F1" font-family="system-ui, -apple-system, sans-serif" font-size="11">Live transcript</text>
+  <text x="770" y="218" fill="#6366F1" font-family="system-ui, -apple-system, sans-serif" font-size="11">LLM suggestions</text>
+  <text x="770" y="238" fill="#6366F1" font-family="system-ui, -apple-system, sans-serif" font-size="11">Diarized speakers</text>
+
+  <!-- Legend -->
+  <rect x="40" y="360" width="880" height="60" rx="10" fill="#F1F5F9"/>
+  <circle cx="70" cy="390" r="5" fill="#16A34A"/>
+  <text x="84" y="394" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="12">Local</text>
+  <circle cx="160" cy="390" r="5" fill="#F59E0B"/>
+  <text x="174" y="394" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="12">Cloud</text>
+  <circle cx="250" cy="390" r="5" fill="#A855F7"/>
+  <text x="264" y="394" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="12">Local (experimental)</text>
+  <text x="430" y="384" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11">Each engine is tried in priority order — first healthy response wins.</text>
+  <text x="430" y="402" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11">Unhealthy engines are bypassed via circuit breaker.</text>
+</svg>
