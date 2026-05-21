@@ -1,0 +1,6 @@
+.DS_Store
+.jekyll-cache/
+_site/
+
+# Personal/source materials — must NOT be published
+JD, CV, CL/

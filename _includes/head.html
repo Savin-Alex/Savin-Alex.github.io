@@ -1,0 +1,24 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- seo -%}
+  <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  <link rel="icon" type="image/svg+xml" href="{{ "/favicon.svg" | relative_url }}">
+  <meta name="theme-color" content="#2B579A">
+  <style>
+    a { color: #2B579A; }
+    h1, h2, h3 { color: #1f2d3d; }
+    h2 { border-bottom: 1px solid #e8e8e8; padding-bottom: .2em; margin-top: 1.4em; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: .95em; }
+    th, td { border: 1px solid #e2e6ee; padding: .5em .7em; text-align: left; vertical-align: top; }
+    th { background: #f4f6fb; }
+    tbody tr:nth-child(even) td { background: #fafbfc; }
+    code { background: #f4f6fb; padding: .1em .3em; border-radius: 3px; }
+    .site-avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: .3em 0; }
+  </style>
+  {%- feed_meta -%}
+  {%- if jekyll.environment == 'production' and site.google_analytics -%}
+    {%- include google-analytics.html -%}
+  {%- endif -%}
+</head>

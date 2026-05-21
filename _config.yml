@@ -1,0 +1,21 @@
+title: Alexander Savin
+description: Портфолио IT / AI Project Manager — Alexander Savin. Управление IT/AI-проектами, AI/LLM, privacy-aware продукты, PM/BA-кейсы.
+theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-feed
+
+# Navigation is handled by a custom language-aware header (_includes/header.html),
+# so header_pages is intentionally omitted.
+
+# Per-language <html lang> and meta description (RU default; EN under /en/)
+defaults:
+  - scope:
+      path: ""
+    values:
+      lang: ru
+  - scope:
+      path: "en"
+    values:
+      lang: en
+      description: "Portfolio of an IT / AI Project Manager — Alexander Savin. Managing IT/AI projects, AI/LLM, privacy-aware products, PM/BA cases."

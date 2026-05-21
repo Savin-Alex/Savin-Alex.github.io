@@ -1,0 +1,71 @@
+<svg width="960" height="620" viewBox="0 0 960 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="620" rx="16" fill="#F8FAFC"/>
+
+  <text x="40" y="44" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="700">Product surfaces</text>
+  <text x="40" y="70" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="14">Four windows that make up the desktop experience</text>
+
+  <!-- Main Window -->
+  <rect x="40" y="100" width="420" height="220" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="40" y="100" width="420" height="32" rx="12" fill="#F1F5F9"/>
+  <rect x="40" y="120" width="420" height="1" fill="#F1F5F9"/>
+  <circle cx="60" cy="116" r="5" fill="#F87171"/>
+  <circle cx="76" cy="116" r="5" fill="#FBBF24"/>
+  <circle cx="92" cy="116" r="5" fill="#4ADE80"/>
+  <text x="112" y="120" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Main Window</text>
+  <text x="64" y="164" fill="#0F172A" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">AI Consul</text>
+  <text x="64" y="186" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="13">Real-time AI assistant for your conversations</text>
+  <text x="64" y="218" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Session Mode:</text>
+  <rect x="64" y="228" width="180" height="32" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="80" y="249" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="13">Job Interviews</text>
+  <rect x="260" y="228" width="100" height="32" rx="6" fill="#4F46E5"/>
+  <text x="282" y="249" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Start</text>
+  <text x="64" y="296" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="12">1. Select mode  2. Start session  3. View suggestions</text>
+
+  <!-- Settings -->
+  <rect x="500" y="100" width="420" height="220" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="500" y="100" width="420" height="32" rx="12" fill="#F1F5F9"/>
+  <rect x="500" y="120" width="420" height="1" fill="#F1F5F9"/>
+  <circle cx="520" cy="116" r="5" fill="#F87171"/>
+  <circle cx="536" cy="116" r="5" fill="#FBBF24"/>
+  <circle cx="552" cy="116" r="5" fill="#4ADE80"/>
+  <text x="572" y="120" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Settings</text>
+  <text x="524" y="164" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Transcription Mode</text>
+  <rect x="524" y="174" width="220" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="540" y="193" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="12">Local First (Cloud Fallback)</text>
+  <text x="524" y="228" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Audio Source</text>
+  <rect x="524" y="238" width="180" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="540" y="257" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="12">Full System Audio</text>
+  <text x="764" y="164" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Cost Limit</text>
+  <rect x="764" y="174" width="80" height="28" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+  <text x="790" y="193" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="12">$15</text>
+  <text x="764" y="228" fill="#334155" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600">Engine</text>
+  <rect x="764" y="238" width="100" height="28" rx="6" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+  <text x="792" y="257" fill="#166534" font-family="system-ui, -apple-system, sans-serif" font-size="12">Online</text>
+  <text x="524" y="300" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Role, API keys, microphone test, translation</text>
+
+  <!-- Transcript -->
+  <rect x="40" y="350" width="420" height="220" rx="12" fill="#0F172A" stroke="#1E293B" stroke-width="1.5"/>
+  <text x="64" y="386" fill="#F8FAFC" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Live Transcript</text>
+  <text x="64" y="408" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="12">Monitor how AI Consul hears your speech</text>
+  <rect x="64" y="426" width="372" height="48" rx="8" fill="#1E293B"/>
+  <text x="80" y="446" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="11">Speaker 1  10:24:14</text>
+  <text x="80" y="464" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="13">Tell me about a time you improved reliability.</text>
+  <rect x="64" y="484" width="372" height="48" rx="8" fill="#1E293B"/>
+  <text x="80" y="504" fill="#8B5CF6" font-family="system-ui, -apple-system, sans-serif" font-size="11">Interim</text>
+  <text x="80" y="522" fill="#A5B4FC" font-family="system-ui, -apple-system, sans-serif" font-size="13">I focused on fallback paths and observability...</text>
+
+  <!-- Companion -->
+  <rect x="500" y="350" width="420" height="240" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+  <rect x="500" y="350" width="420" height="32" rx="12" fill="#F1F5F9"/>
+  <rect x="500" y="370" width="420" height="1" fill="#F1F5F9"/>
+  <text x="524" y="370" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Companion Overlay  (always on top)</text>
+  <rect x="524" y="390" width="372" height="52" rx="8" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1"/>
+  <text x="544" y="412" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="12">We reduced p95 latency from 1.2s to 340ms by switching</text>
+  <text x="544" y="428" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="12">to a local-first transcription pipeline with circuit breaker.</text>
+  <rect x="524" y="450" width="372" height="52" rx="8" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="544" y="472" fill="#1E40AF" font-family="system-ui, -apple-system, sans-serif" font-size="12">The failover chain has 5 engines. WhisperLiveKit handles</text>
+  <text x="544" y="488" fill="#1E40AF" font-family="system-ui, -apple-system, sans-serif" font-size="12">streaming; whisper.cpp and Voxtral cover batch locally.</text>
+  <rect x="524" y="510" width="372" height="52" rx="8" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="544" y="532" fill="#166534" font-family="system-ui, -apple-system, sans-serif" font-size="12">Cost tracking is exposed per-session so the user always</text>
+  <text x="544" y="548" fill="#166534" font-family="system-ui, -apple-system, sans-serif" font-size="12">knows when cloud fallback is active and what it costs.</text>
+</svg>
