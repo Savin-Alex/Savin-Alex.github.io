@@ -12,6 +12,11 @@ Privacy-first AI-ассистент для live-разговоров, интер
 
 Desktop-продукт, который даёт пользователю live-транскрипт и AI-подсказки прямо во время разговора, сохраняя контроль над privacy, fallback-поведением и режимами обработки аудио.
 
+<figure style="margin:1.6em 0;">
+<iframe src="{{ '/demos/ai-consul.ru.html' | relative_url }}" title="Интерактивное демо: AI Consul live-сессия" loading="lazy" style="width:100%;height:640px;border:1px solid #e2e6ee;border-radius:8px;"></iframe>
+<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Анимация живой сессии: транскрипт, аудио-волны и генерация подсказок. <a href="{{ '/demos/ai-consul.ru.html' | relative_url }}" target="_blank" rel="noopener">Открыть в полном окне ↗</a></figcaption>
+</figure>
+
 ## Паспорт проекта
 
 | Поле | Содержание |

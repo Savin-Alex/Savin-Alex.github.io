@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DevPipe - анимированная презентация</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111315;
+      --panel: #191d20;
+      --panel-2: #20252a;
+      --line: #3d4850;
+      --text: #f0f4f5;
+      --muted: #aab6bd;
+      --green: #41c184;
+      --blue: #56a6e8;
+      --amber: #e5ad47;
+      --violet: #a88be8;
+      --shadow: rgba(0, 0, 0, 0.36);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        var(--bg);
+      background-size: 42px 42px;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .stage {
+      width: min(1180px, 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(17, 19, 21, 0.94);
+      box-shadow: 0 24px 80px var(--shadow);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: start;
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(25, 29, 32, 0.82);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1.08;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      max-width: 790px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .control-button {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 8px;
+      background: #15191c;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .control-button:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+      background: #20262a;
+    }
+
+    .content {
+      display: grid;
+      gap: 20px;
+      padding: 34px;
+    }
+
+    .lane-title {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px 14px;
+    }
+
+    .node {
+      position: relative;
+      min-height: 132px;
+      padding: 15px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--panel);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      display: grid;
+      align-content: start;
+      gap: 9px;
+      min-width: 0;
+      overflow: hidden;
+      animation: cardFocus 9s ease-in-out infinite;
+    }
+
+    .node::after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      z-index: 2;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--muted);
+      border-right: 2px solid var(--muted);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .node:nth-child(3)::after,
+    .node:nth-child(6)::after {
+      display: none;
+    }
+
+    .node:nth-child(4)::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -18px;
+      width: calc(200% + 28px);
+      height: 1px;
+      border-top: 1px dashed rgba(170, 182, 189, 0.42);
+      transform: translateX(-50%);
+    }
+
+    .node:nth-child(1) { animation-delay: 0s; }
+    .node:nth-child(2) { animation-delay: 1.2s; }
+    .node:nth-child(3) { animation-delay: 2.4s; }
+    .node:nth-child(4) { animation-delay: 3.6s; }
+    .node:nth-child(5) { animation-delay: 4.8s; }
+    .node:nth-child(6) { animation-delay: 6s; }
+
+    .node-index {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #08110d;
+      background: var(--green);
+    }
+
+    .planner .node-index { background: var(--blue); }
+    .build .node-index { background: var(--amber); }
+    .validate .node-index { background: var(--green); }
+    .review .node-index { background: var(--violet); color: #120d1f; }
+    .pr .node-index { background: #f4f6f6; }
+
+    .node h2 {
+      margin: 0;
+      font-size: 0.96rem;
+      line-height: 1.18;
+      overflow-wrap: anywhere;
+    }
+
+    .node p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.38;
+      overflow-wrap: anywhere;
+    }
+
+    .support-lanes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .support-lane,
+    .summary-panel {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(32, 37, 42, 0.92);
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .support-lane h3,
+    .summary-panel h3 {
+      margin: 0 0 11px;
+      font-size: 0.94rem;
+    }
+
+    .gate-grid,
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .gate,
+    .summary-item {
+      min-height: 72px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(17, 19, 21, 0.52);
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .gate::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: var(--green);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: gateFill 9s linear infinite;
+    }
+
+    .gate:nth-child(2)::after { animation-delay: -1.2s; background: var(--amber); }
+    .gate:nth-child(3)::after { animation-delay: -2.4s; background: var(--blue); }
+    .gate:nth-child(4)::after { animation-delay: -3.6s; background: var(--violet); }
+
+    .gate strong,
+    .summary-item strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 0.86rem;
+      overflow-wrap: anywhere;
+    }
+
+    .gate span,
+    .summary-item span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-item b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--green);
+      font-size: 1.08rem;
+    }
+
+    .caption {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      max-width: 760px;
+      line-height: 1.5;
+    }
+
+    .paused * {
+      animation-play-state: paused !important;
+    }
+
+    .resetting *,
+    .resetting *::before,
+    .resetting *::after {
+      animation: none !important;
+    }
+
+    @keyframes cardFocus {
+      0%, 10%, 100% {
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      }
+      16%, 26% {
+        border-color: rgba(65, 193, 132, 0.72);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), 0 0 0 3px rgba(65, 193, 132, 0.12);
+      }
+    }
+
+    @keyframes gateFill {
+      0%, 20% { transform: scaleX(0); }
+      45%, 70% { transform: scaleX(1); }
+      100% { transform: scaleX(0); }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 12px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        padding: 22px 18px 16px;
+      }
+
+      h1 {
+        font-size: 1.55rem;
+      }
+
+      .controls {
+        justify-content: start;
+      }
+
+      .content {
+        padding: 22px 18px;
+      }
+
+      .workflow-grid,
+      .support-lanes,
+      .gate-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .node {
+        min-height: 88px;
+        grid-template-columns: 34px 1fr;
+        align-items: center;
+        padding: 12px;
+      }
+
+      .node::after {
+        display: block;
+        right: auto;
+        left: 23px;
+        top: auto;
+        bottom: -14px;
+        transform: rotate(135deg);
+      }
+
+      .node:nth-child(6)::after {
+        display: none;
+      }
+
+      .node:nth-child(4)::before {
+        display: none;
+      }
+
+      .caption {
+        max-width: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Портфолио кейс</p>
+        <h1>Multi-Agent AI Development Pipeline</h1>
+        <p class="subtitle">
+          Управляемый GenAI delivery workflow: от задачи в Jira до проверяемого Pull Request
+          с quality gates, метриками, risk management и evidence package.
+        </p>
+      </div>
+      <div class="controls" aria-label="Управление анимацией">
+        <button class="control-button" id="pauseButton" type="button" title="Пауза" aria-label="Пауза">II</button>
+        <button class="control-button" id="replayButton" type="button" title="Повтор" aria-label="Повтор">R</button>
+      </div>
+    </header>
+
+    <section class="content" aria-label="Анимированная схема проекта DevPipe">
+      <div>
+        <p class="lane-title">Delivery flow</p>
+        <div class="workflow-grid">
+          <article class="node">
+            <div class="node-index">1</div>
+            <div>
+              <h2>Задача</h2>
+              <p>Jira issue со scope, acceptance criteria и Definition of Done.</p>
+            </div>
+          </article>
+
+          <article class="node planner">
+            <div class="node-index">2</div>
+            <div>
+              <h2>План</h2>
+              <p>План реализации, целевые файлы и проверки приемки.</p>
+            </div>
+          </article>
+
+          <article class="node build">
+            <div class="node-index">3</div>
+            <div>
+              <h2>Сборка</h2>
+              <p>AI-generated source changes, тесты и зависимости.</p>
+            </div>
+          </article>
+
+          <article class="node validate">
+            <div class="node-index">4</div>
+            <div>
+              <h2>Проверка</h2>
+              <p>Policy checks, secret scan и Docker sandbox tests.</p>
+            </div>
+          </article>
+
+          <article class="node review">
+            <div class="node-index">5</div>
+            <div>
+              <h2>Ревью</h2>
+              <p>Approval или rejection на основе diff и test evidence.</p>
+            </div>
+          </article>
+
+          <article class="node pr">
+            <div class="node-index">6</div>
+            <div>
+              <h2>PR</h2>
+              <p>GitHub branch и Pull Request только после успешных gates.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="support-lanes" aria-label="Governance и evidence">
+        <section class="support-lane">
+          <h3>Governance Gates</h3>
+          <div class="gate-grid">
+            <div class="gate">
+              <strong>Приемка</strong>
+              <span>Scope, checks, Definition of Done.</span>
+            </div>
+            <div class="gate">
+              <strong>Риски</strong>
+              <span>Secret scan, budget guard, issue locks.</span>
+            </div>
+            <div class="gate">
+              <strong>Качество</strong>
+              <span>Обязательные тесты и sandbox validation.</span>
+            </div>
+            <div class="gate">
+              <strong>Governance</strong>
+              <span>Dry-run отдельно от controlled real-run.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="support-lane">
+          <h3>Evidence Output</h3>
+          <div class="gate-grid">
+            <div class="gate">
+              <strong>summary.json</strong>
+              <span>Status, failure envelope, approvals.</span>
+            </div>
+            <div class="gate">
+              <strong>Sandbox logs</strong>
+              <span>stdout, stderr, test output.</span>
+            </div>
+            <div class="gate">
+              <strong>Метрики</strong>
+              <span>Stage time и estimated cost.</span>
+            </div>
+            <div class="gate">
+              <strong>История</strong>
+              <span>Artifact index по каждой issue-группе.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="summary-panel" aria-label="Сводка по проекту">
+        <h3>Validation Snapshot и PM-артефакты</h3>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <b>55</b>
+            <span>автотестов проходят в локальном validation контуре</span>
+          </div>
+          <div class="summary-item">
+            <b>11</b>
+            <span>issue-групп с сохраненной artifact history</span>
+          </div>
+          <div class="summary-item">
+            <strong>PM artifacts</strong>
+            <span>Charter, backlog, roadmap, risk register, metrics, retrospective.</span>
+          </div>
+          <div class="summary-item">
+            <strong>Результат</strong>
+            <span>Повторяемый Jira-to-PR workflow с audit-ready evidence.</span>
+          </div>
+        </div>
+      </section>
+
+      <p class="caption">
+        Эта версия сделана для портфолио Junior IT Project Manager: акцент на структуре проекта,
+        acceptance criteria, quality gates, управлении рисками, метриках и проверяемых артефактах,
+        а не только на технической реализации.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const pauseButton = document.getElementById("pauseButton");
+    const replayButton = document.getElementById("replayButton");
+
+    pauseButton.addEventListener("click", () => {
+      const paused = stage.classList.toggle("paused");
+      pauseButton.textContent = paused ? ">" : "II";
+      pauseButton.title = paused ? "Продолжить" : "Пауза";
+      pauseButton.setAttribute("aria-label", paused ? "Продолжить" : "Пауза");
+    });
+
+    replayButton.addEventListener("click", () => {
+      stage.classList.remove("paused");
+      pauseButton.textContent = "II";
+      pauseButton.title = "Пауза";
+      pauseButton.setAttribute("aria-label", "Пауза");
+      stage.classList.add("resetting");
+      void stage.offsetHeight;
+      stage.classList.remove("resetting");
+    });
+  </script>
+</body>
+</html>

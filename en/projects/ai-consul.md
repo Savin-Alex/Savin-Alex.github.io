@@ -12,6 +12,11 @@ Privacy-first AI assistant for live conversations, interviews, meetings, and lea
 
 AI Consul is a desktop product that gives users live transcripts and AI suggestions during a conversation while keeping privacy, fallback behavior, and audio-processing modes visible and controllable.
 
+<figure style="margin:1.6em 0;">
+<iframe src="{{ '/demos/ai-consul.html' | relative_url }}" title="Interactive demo: AI Consul live session" loading="lazy" style="width:100%;height:640px;border:1px solid #e2e6ee;border-radius:8px;"></iframe>
+<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Live-session animation: transcript, audio waveforms, and suggestion generation. <a href="{{ '/demos/ai-consul.html' | relative_url }}" target="_blank" rel="noopener">Open full screen ↗</a></figcaption>
+</figure>
+
 ## Project Passport
 
 | Field | Content |

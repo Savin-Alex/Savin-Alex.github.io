@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Consul Real Session Animation</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #172033;
+        --muted: #667085;
+        --line: #d8dee8;
+        --panel: #ffffff;
+        --panel-soft: #f7f9fc;
+        --teal: #18a999;
+        --teal-dark: #087f73;
+        --blue: #2f80ed;
+        --amber: #f2a93b;
+        --green: #20a66a;
+        --red: #d75b52;
+        --shadow: 0 24px 70px rgba(26, 38, 58, 0.18);
+        --radius: 8px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+        background:
+          linear-gradient(90deg, rgba(23, 32, 51, 0.06) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(23, 32, 51, 0.06) 1px, transparent 1px),
+          linear-gradient(135deg, #f7f2e9 0%, #eef7f4 45%, #eef3fb 100%);
+        background-size: 42px 42px, 42px 42px, 100% 100%;
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .stage {
+        width: min(94vw, 1220px);
+        aspect-ratio: 16 / 9;
+        padding: clamp(18px, 2vw, 28px);
+      }
+
+      .showcase {
+        position: relative;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: clamp(14px, 1.6vw, 22px);
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        padding: clamp(18px, 2vw, 28px);
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.75);
+        box-shadow: var(--shadow);
+      }
+
+      .showcase::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 16% 20%, rgba(24, 169, 153, 0.12), transparent 20%),
+          radial-gradient(circle at 82% 14%, rgba(242, 169, 59, 0.14), transparent 22%),
+          linear-gradient(120deg, rgba(47, 128, 237, 0.08), transparent 55%);
+        opacity: 0.72;
+        z-index: 0;
+      }
+
+      .topbar,
+      .workspace,
+      .session-footer {
+        position: relative;
+        z-index: 1;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 18px;
+        align-items: center;
+      }
+
+      .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .mark {
+        position: relative;
+        width: 34px;
+        height: 34px;
+        border-radius: 7px;
+        background: linear-gradient(135deg, var(--teal), #86d8c6 56%, var(--amber));
+        box-shadow: 0 8px 22px rgba(24, 169, 153, 0.22);
+      }
+
+      .mark::after {
+        content: "";
+        position: absolute;
+        inset: 9px;
+        border: 2px solid rgba(255, 255, 255, 0.86);
+        border-radius: 5px;
+      }
+
+      .brand-name {
+        margin: 0;
+        font-size: clamp(18px, 2vw, 24px);
+        line-height: 1;
+        font-weight: 780;
+        letter-spacing: 0;
+      }
+
+      .brand-subtitle {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: clamp(11px, 1.1vw, 13px);
+        font-weight: 650;
+      }
+
+      .session-title {
+        min-width: 0;
+        text-align: center;
+      }
+
+      .session-title p {
+        margin: 0;
+      }
+
+      .scene-label {
+        color: var(--teal-dark);
+        font-size: clamp(10px, 0.95vw, 12px);
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .scene-headline {
+        margin-top: 5px;
+        color: var(--ink);
+        font-size: clamp(16px, 1.9vw, 25px);
+        font-weight: 780;
+        line-height: 1.08;
+        letter-spacing: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .status-pills {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        padding: 0 10px;
+        border: 1px solid rgba(23, 32, 51, 0.1);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.78);
+        color: #344054;
+        font-size: 12px;
+        font-weight: 760;
+        white-space: nowrap;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 3px rgba(32, 166, 106, 0.13);
+      }
+
+      .dot.blue {
+        background: var(--blue);
+        box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.13);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 0.86fr 1.14fr;
+        gap: clamp(14px, 1.7vw, 24px);
+        min-height: 0;
+      }
+
+      .control-panel,
+      .conversation-panel,
+      .answer-panel {
+        min-width: 0;
+        min-height: 0;
+        border: 1px solid rgba(23, 32, 51, 0.11);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: 0 16px 34px rgba(26, 38, 58, 0.1);
+        overflow: hidden;
+      }
+
+      .control-panel {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 44px;
+        padding: 0 14px;
+        border-bottom: 1px solid rgba(23, 32, 51, 0.08);
+        background: rgba(248, 250, 252, 0.9);
+      }
+
+      .panel-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .panel-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 22px;
+        padding: 0 8px;
+        border-radius: 8px;
+        color: var(--teal-dark);
+        background: rgba(24, 169, 153, 0.1);
+        font-size: 10px;
+        font-weight: 850;
+        white-space: nowrap;
+      }
+
+      .setup-content {
+        display: grid;
+        align-content: center;
+        gap: 14px;
+        padding: clamp(14px, 1.7vw, 22px);
+      }
+
+      .mode-block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .meta-label {
+        margin: 0 0 5px;
+        color: #667085;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .mode-name {
+        margin: 0;
+        font-size: clamp(18px, 2vw, 26px);
+        line-height: 1.05;
+        font-weight: 800;
+      }
+
+      .session-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 38px;
+        padding: 0 14px;
+        border-radius: 8px;
+        color: #ffffff;
+        background: var(--ink);
+        font-size: 13px;
+        font-weight: 850;
+        box-shadow: 0 10px 22px rgba(23, 32, 51, 0.22);
+      }
+
+      .session-button::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #ffffff;
+        animation: pulse 1400ms ease-in-out infinite;
+      }
+
+      .source-card {
+        display: grid;
+        grid-template-columns: 58px 1fr auto;
+        align-items: center;
+        gap: 12px;
+        min-height: 74px;
+        padding: 12px;
+        border: 1px solid rgba(23, 32, 51, 0.1);
+        border-radius: var(--radius);
+        background: #ffffff;
+      }
+
+      .source-card.mic {
+        border-color: rgba(24, 169, 153, 0.3);
+      }
+
+      .source-card.system {
+        border-color: rgba(47, 128, 237, 0.28);
+      }
+
+      .source-icon {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 8px;
+        background: #edf7f5;
+        color: var(--teal-dark);
+        font-size: 19px;
+        font-weight: 900;
+      }
+
+      .source-card.system .source-icon {
+        color: var(--blue);
+        background: #edf4ff;
+      }
+
+      .source-copy h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .source-copy p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 680;
+      }
+
+      .wave {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 3px;
+        width: 70px;
+        height: 38px;
+      }
+
+      .bar {
+        width: 5px;
+        height: calc(var(--h) * 1px);
+        border-radius: 999px;
+        background: var(--teal);
+        transform-origin: center;
+        animation: wave 980ms ease-in-out infinite;
+        animation-delay: calc(var(--i) * 70ms);
+      }
+
+      .system .bar {
+        background: var(--blue);
+        animation-duration: 1120ms;
+      }
+
+      .bar:nth-child(1) { --i: 1; --h: 13; }
+      .bar:nth-child(2) { --i: 2; --h: 24; }
+      .bar:nth-child(3) { --i: 3; --h: 34; }
+      .bar:nth-child(4) { --i: 4; --h: 19; }
+      .bar:nth-child(5) { --i: 5; --h: 30; }
+      .bar:nth-child(6) { --i: 6; --h: 22; }
+      .bar:nth-child(7) { --i: 7; --h: 15; }
+
+      .route-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 0 clamp(14px, 1.7vw, 22px) clamp(14px, 1.7vw, 22px);
+      }
+
+      .route-step {
+        min-width: 0;
+        padding: 9px;
+        border: 1px solid rgba(23, 32, 51, 0.1);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .route-step span {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--muted);
+        font-size: 9px;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .route-step strong {
+        display: block;
+        font-size: 12px;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .session-grid {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: clamp(14px, 1.7vw, 24px);
+        min-height: 0;
+      }
+
+      .conversation-panel,
+      .answer-panel {
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .transcript-stream {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 0;
+        padding: 14px;
+        overflow-y: auto;
+      }
+
+      .empty-state {
+        display: grid;
+        place-items: center;
+        height: 100%;
+        border: 1px dashed rgba(23, 32, 51, 0.16);
+        border-radius: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 760;
+        text-align: center;
+      }
+
+      .entry {
+        display: grid;
+        gap: 6px;
+        padding: 10px 11px;
+        border-left: 3px solid #d8dee8;
+        border-radius: 8px;
+        background: #f8fafc;
+        animation: entry-in 360ms ease both;
+      }
+
+      .entry.remote {
+        border-left-color: var(--blue);
+      }
+
+      .entry.you {
+        border-left-color: var(--teal);
+      }
+
+      .entry-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: #667085;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .entry p {
+        margin: 0;
+        color: #253047;
+        font-size: clamp(12px, 1.13vw, 14px);
+        line-height: 1.35;
+        font-weight: 650;
+      }
+
+      .transcript-stream::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .transcript-stream::-webkit-scrollbar-thumb {
+        background: rgba(23, 32, 51, 0.16);
+        border-radius: 999px;
+      }
+
+      .answer-content {
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 12px;
+        min-height: 0;
+        padding: 14px;
+      }
+
+      .question-context {
+        display: grid;
+        gap: 5px;
+        padding: 10px 11px;
+        border: 1px solid rgba(47, 128, 237, 0.16);
+        border-radius: 8px;
+        background: rgba(47, 128, 237, 0.07);
+      }
+
+      .question-context span {
+        color: #225a9e;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .question-context p {
+        margin: 0;
+        color: #253047;
+        font-size: 13px;
+        line-height: 1.3;
+        font-weight: 690;
+      }
+
+      .answer-state {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 28px;
+        color: var(--teal-dark);
+        font-size: 12px;
+        font-weight: 820;
+      }
+
+      .typing-dots {
+        display: inline-flex;
+        gap: 3px;
+      }
+
+      .typing-dots i {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--teal);
+        animation: typing 900ms ease-in-out infinite;
+      }
+
+      .typing-dots i:nth-child(2) {
+        animation-delay: 120ms;
+      }
+
+      .typing-dots i:nth-child(3) {
+        animation-delay: 240ms;
+      }
+
+      .direct-answer {
+        min-height: 0;
+        padding: 16px;
+        border-radius: 8px;
+        background: var(--ink);
+        color: #ffffff;
+        box-shadow: 0 18px 34px rgba(23, 32, 51, 0.2);
+      }
+
+      .answer-text {
+        margin: 0;
+        font-size: clamp(14px, 1.42vw, 18px);
+        font-weight: 760;
+        line-height: 1.43;
+        letter-spacing: 0;
+      }
+
+      .cursor {
+        display: inline-block;
+        width: 8px;
+        color: #86d8c6;
+        animation: cursor 720ms steps(1) infinite;
+      }
+
+      .session-footer {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 9px;
+      }
+
+      .timeline-step {
+        position: relative;
+        min-width: 0;
+        padding: 8px 8px 8px 28px;
+        border: 1px solid rgba(23, 32, 51, 0.1);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.76);
+        color: #516070;
+        font-size: 11px;
+        font-weight: 820;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .timeline-step::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #c9d2df;
+        transform: translateY(-50%);
+      }
+
+      .timeline-step.active {
+        color: var(--ink);
+        border-color: rgba(24, 169, 153, 0.28);
+        background: #ebfaf7;
+      }
+
+      .timeline-step.active::before {
+        background: var(--teal);
+        box-shadow: 0 0 0 4px rgba(24, 169, 153, 0.12);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(0.72);
+          opacity: 0.72;
+        }
+      }
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: scaleY(0.58);
+          opacity: 0.55;
+        }
+        42% {
+          transform: scaleY(1.18);
+          opacity: 1;
+        }
+        72% {
+          transform: scaleY(0.82);
+          opacity: 0.78;
+        }
+      }
+
+      @keyframes entry-in {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes typing {
+        0%,
+        100% {
+          opacity: 0.35;
+          transform: translateY(0);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-3px);
+        }
+      }
+
+      @keyframes cursor {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 980px) {
+        body {
+          overflow: auto;
+        }
+
+        .stage {
+          width: min(96vw, 760px);
+          aspect-ratio: auto;
+          min-height: 1020px;
+        }
+
+        .topbar,
+        .workspace,
+        .session-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .session-title {
+          text-align: left;
+        }
+
+        .scene-headline {
+          white-space: normal;
+        }
+
+        .status-pills {
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        }
+
+        .control-panel {
+          min-height: 430px;
+        }
+
+        .session-footer,
+        .route-strip {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 560px) {
+        .stage {
+          min-height: 1200px;
+        }
+
+        .mode-block,
+        .source-card {
+          grid-template-columns: 1fr;
+          align-items: start;
+        }
+
+        .session-button {
+          justify-content: center;
+          width: 100%;
+        }
+
+        .wave {
+          justify-content: flex-start;
+        }
+
+        .session-footer,
+        .route-strip {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <main class="showcase" aria-label="AI Consul real session animation">
+        <header class="topbar">
+          <div class="brand-lockup">
+            <div class="mark" aria-hidden="true"></div>
+            <div>
+              <h1 class="brand-name">AI Consul</h1>
+              <p class="brand-subtitle">Real-time conversation assistant</p>
+            </div>
+          </div>
+
+          <div class="session-title">
+            <p class="scene-label">Live interview simulation</p>
+            <p class="scene-headline" data-headline>Remote questions become direct answers in session.</p>
+          </div>
+
+          <div class="status-pills" aria-label="System status">
+            <span class="pill"><span class="dot"></span>Local STT</span>
+            <span class="pill"><span class="dot blue"></span>Speaker gated</span>
+          </div>
+        </header>
+
+        <section class="workspace" aria-label="AI Consul session">
+          <aside class="control-panel" aria-label="Session controls and capture">
+            <div class="panel-header">
+              <h2 class="panel-title">AI Consul Desktop</h2>
+              <span class="panel-badge" data-session-clock>00:00</span>
+            </div>
+
+            <div class="setup-content">
+              <div class="mode-block">
+                <div>
+                  <p class="meta-label">Session mode</p>
+                  <p class="mode-name">Job Interview</p>
+                </div>
+                <div class="session-button">Session Active</div>
+              </div>
+
+              <article class="source-card mic">
+                <div class="source-icon" aria-hidden="true">M</div>
+                <div class="source-copy">
+                  <h3>Microphone</h3>
+                  <p>User speech becomes context, not a trigger.</p>
+                </div>
+                <div class="wave" aria-hidden="true">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+              </article>
+
+              <article class="source-card system">
+                <div class="source-icon" aria-hidden="true">S</div>
+                <div class="source-copy">
+                  <h3>System Audio</h3>
+                  <p>Remote questions trigger direct answers.</p>
+                </div>
+                <div class="wave" aria-hidden="true">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+              </article>
+            </div>
+
+            <div class="route-strip" aria-label="Processing route">
+              <div class="route-step">
+                <span>Capture</span>
+                <strong>Mic + system</strong>
+              </div>
+              <div class="route-step">
+                <span>Classify</span>
+                <strong>Remote turn</strong>
+              </div>
+              <div class="route-step">
+                <span>Answer</span>
+                <strong>Direct response</strong>
+              </div>
+            </div>
+          </aside>
+
+          <section class="session-grid" aria-label="Transcript and companion answer">
+            <section class="conversation-panel" aria-label="Live transcript">
+              <div class="panel-header">
+                <h2 class="panel-title">Live Transcript</h2>
+                <span class="panel-badge" data-transcript-state>Listening</span>
+              </div>
+              <div class="transcript-stream" data-transcript>
+                <div class="empty-state">Waiting for remote question...</div>
+              </div>
+            </section>
+
+            <section class="answer-panel" aria-label="Companion Answer">
+              <div class="panel-header">
+                <h2 class="panel-title">Companion Answer</h2>
+                <span class="panel-badge" data-answer-badge>Ready</span>
+              </div>
+              <div class="answer-content">
+                <div class="question-context">
+                  <span>Remote asked</span>
+                  <p data-current-question>Waiting for the interviewer...</p>
+                </div>
+                <div class="answer-state">
+                  <span class="typing-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <span data-answer-state>Listening for a remote question</span>
+                </div>
+                <div class="direct-answer">
+                  <p class="answer-text"><span data-answer-text></span><span class="cursor">|</span></p>
+                </div>
+              </div>
+            </section>
+          </section>
+        </section>
+
+        <footer class="session-footer" aria-label="Session progress">
+          <span class="timeline-step active" data-step="listen">Listen</span>
+          <span class="timeline-step" data-step="question">Question</span>
+          <span class="timeline-step" data-step="generate">Generate</span>
+          <span class="timeline-step" data-step="answer">Answer</span>
+          <span class="timeline-step" data-step="respond">Respond</span>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      const turns = [
+        {
+          remoteTime: "00:04",
+          youTime: "00:12",
+          question: "How did you improve performance in the live audio path?",
+          answer:
+            "I improved it by removing repeated work from every audio chunk. We send buffers directly over IPC, keep expensive diagnostics behind a debug flag, and verify the path with targeted tests so recording stays responsive.",
+          said:
+            "I improved it by removing repeated work from every audio chunk and sending buffers directly over IPC.",
+        },
+        {
+          remoteTime: "00:19",
+          youTime: "00:28",
+          question: "How do you keep answers from firing on your own speech?",
+          answer:
+            "I gate generation on speaker and source attribution. In interview and meeting modes, AI Consul waits for a remote turn before generating, so my own explanation updates context without triggering another answer.",
+          said:
+            "I gate generation on source attribution, so my speech updates context without triggering another answer.",
+        },
+        {
+          remoteTime: "00:35",
+          youTime: "00:45",
+          question: "What makes the product privacy-first?",
+          answer:
+            "The default path is local: capture, transcription, and routing run on the device. Cloud providers are explicit opt-in, and transcript saving is controlled by the user instead of being silently enabled.",
+          said:
+            "The default path is local, cloud is explicit opt-in, and transcript saving is user controlled.",
+        },
+      ];
+
+      const nodes = {
+        transcript: document.querySelector("[data-transcript]"),
+        transcriptState: document.querySelector("[data-transcript-state]"),
+        currentQuestion: document.querySelector("[data-current-question]"),
+        answerState: document.querySelector("[data-answer-state]"),
+        answerText: document.querySelector("[data-answer-text]"),
+        answerBadge: document.querySelector("[data-answer-badge]"),
+        clock: document.querySelector("[data-session-clock]"),
+        headline: document.querySelector("[data-headline]"),
+        steps: Array.from(document.querySelectorAll("[data-step]")),
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const paused = params.get("paused") === "1";
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+      const setStep = (active) => {
+        nodes.steps.forEach((step) => {
+          step.classList.toggle("active", step.dataset.step === active);
+        });
+      };
+
+      const setStatus = ({ transcript, answer, badge, step, headline }) => {
+        if (transcript) nodes.transcriptState.textContent = transcript;
+        if (answer) nodes.answerState.textContent = answer;
+        if (badge) nodes.answerBadge.textContent = badge;
+        if (step) setStep(step);
+        if (headline) nodes.headline.textContent = headline;
+      };
+
+      const createEntry = ({ speaker, time, text, type }) => {
+        const entry = document.createElement("article");
+        entry.className = `entry ${type}`;
+        entry.innerHTML = `
+          <div class="entry-meta">
+            <span>${speaker}</span>
+            <time>${time}</time>
+          </div>
+          <p></p>
+        `;
+        entry.querySelector("p").textContent = text;
+        return entry;
+      };
+
+      const clearSession = () => {
+        nodes.transcript.replaceChildren();
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = "Waiting for remote question...";
+        nodes.transcript.append(empty);
+        nodes.currentQuestion.textContent = "Waiting for the interviewer...";
+        nodes.answerText.textContent = "";
+        nodes.clock.textContent = "00:00";
+        setStatus({
+          transcript: "Listening",
+          answer: "Listening for a remote question",
+          badge: "Ready",
+          step: "listen",
+          headline: "Remote questions become direct answers in session.",
+        });
+      };
+
+      const appendEntry = (entry) => {
+        const empty = nodes.transcript.querySelector(".empty-state");
+        if (empty) empty.remove();
+        nodes.transcript.append(entry);
+        while (nodes.transcript.children.length > 6) {
+          nodes.transcript.firstElementChild?.remove();
+        }
+        nodes.transcript.scrollTop = nodes.transcript.scrollHeight;
+      };
+
+      const typeAnswer = async (text) => {
+        nodes.answerText.textContent = "";
+        const speed = 18;
+        for (let i = 0; i < text.length; i += 1) {
+          nodes.answerText.textContent += text[i];
+          await wait(speed);
+        }
+      };
+
+      const renderStatic = () => {
+        clearSession();
+        for (const turn of turns) {
+          appendEntry(createEntry({
+            speaker: "Remote 1",
+            time: turn.remoteTime,
+            text: turn.question,
+            type: "remote",
+          }));
+          appendEntry(createEntry({
+            speaker: "You",
+            time: turn.youTime,
+            text: turn.said,
+            type: "you",
+          }));
+        }
+        const last = turns[turns.length - 1];
+        nodes.currentQuestion.textContent = last.question;
+        nodes.answerText.textContent = last.answer;
+        nodes.clock.textContent = last.youTime;
+        setStatus({
+          transcript: "Session live",
+          answer: "Direct answer ready",
+          badge: "Direct answer",
+          step: "answer",
+          headline: "Questions and answers appear like a real session.",
+        });
+      };
+
+      let generation = 0;
+
+      const runSession = async () => {
+        const runId = generation + 1;
+        generation = runId;
+        clearSession();
+        await wait(700);
+
+        for (const turn of turns) {
+          if (generation !== runId) return;
+
+          nodes.clock.textContent = turn.remoteTime;
+          nodes.currentQuestion.textContent = turn.question;
+          appendEntry(createEntry({
+            speaker: "Remote 1",
+            time: turn.remoteTime,
+            text: turn.question,
+            type: "remote",
+          }));
+          setStatus({
+            transcript: "Remote question",
+            answer: "Classifying remote turn",
+            badge: "Reading",
+            step: "question",
+            headline: "A remote question lands in the transcript.",
+          });
+
+          await wait(820);
+          if (generation !== runId) return;
+
+          setStatus({
+            transcript: "Context locked",
+            answer: "Generating direct answer",
+            badge: "Generating",
+            step: "generate",
+            headline: "The companion writes a direct answer.",
+          });
+          await typeAnswer(turn.answer);
+
+          if (generation !== runId) return;
+          setStatus({
+            transcript: "Answer ready",
+            answer: "Direct answer ready",
+            badge: "Direct answer",
+            step: "answer",
+            headline: "The answer is ready to say.",
+          });
+
+          await wait(1100);
+          if (generation !== runId) return;
+
+          nodes.clock.textContent = turn.youTime;
+          appendEntry(createEntry({
+            speaker: "You",
+            time: turn.youTime,
+            text: turn.said,
+            type: "you",
+          }));
+          setStatus({
+            transcript: "User response",
+            answer: "Waiting for next remote question",
+            badge: "Ready",
+            step: "respond",
+            headline: "The spoken response is added back to context.",
+          });
+
+          await wait(2100);
+        }
+
+        if (generation === runId) {
+          await wait(1600);
+          runSession();
+        }
+      };
+
+      if (paused) {
+        renderStatic();
+      } else {
+        runSession();
+      }
+    </script>
+  </body>
+</html>

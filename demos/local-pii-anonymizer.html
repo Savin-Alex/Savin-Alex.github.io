@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local PII Anonymizer | One Page Portfolio Presentation</title>
+  <meta name="description" content="One page animated portfolio presentation for the Local PII Anonymizer project.">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f8f2;
+      --paper-2: #edf4ee;
+      --ink: #151815;
+      --muted: #667066;
+      --line: rgba(21, 24, 21, 0.15);
+      --line-strong: rgba(21, 24, 21, 0.28);
+      --green: #18a66f;
+      --mint: #a4edcb;
+      --blue: #2d72ff;
+      --coral: #ff675c;
+      --amber: #f1b94e;
+      --lime: #d9ff62;
+      --white: #ffffff;
+      --shadow: 0 28px 90px rgba(21, 24, 21, 0.13);
+      --radius: 8px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--paper);
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(21, 24, 21, 0.055) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(21, 24, 21, 0.055) 1px, transparent 1px),
+        linear-gradient(135deg, var(--paper), var(--paper-2));
+      background-size: 42px 42px, 42px 42px, 100% 100%;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: 36px;
+    }
+
+    .poster {
+      width: min(1260px, 100%);
+      min-height: min(820px, calc(100vh - 72px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 24px;
+    }
+
+    .topline,
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 720;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink);
+      font-weight: 830;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: var(--lime);
+      box-shadow: 0 10px 30px rgba(21, 24, 21, 0.16);
+    }
+
+    .brand-mark svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(360px, 0.88fr) minmax(0, 1.12fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .story {
+      min-height: 0;
+      display: grid;
+      align-content: center;
+      gap: 22px;
+      padding: 18px 0;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.66);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 790;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      animation: fade-up 720ms var(--ease) both;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(24, 166, 111, 0.14);
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: 86px;
+      line-height: 0.92;
+      letter-spacing: 0;
+      font-weight: 880;
+      animation: fade-up 760ms var(--ease) 80ms both;
+    }
+
+    .lead {
+      max-width: 650px;
+      color: #394039;
+      font-size: 24px;
+      line-height: 1.22;
+      animation: fade-up 760ms var(--ease) 160ms both;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      animation: fade-up 760ms var(--ease) 240ms both;
+    }
+
+    .tag {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .tag.dark {
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      animation: fade-up 760ms var(--ease) 320ms both;
+    }
+
+    .metric {
+      min-height: 112px;
+      display: grid;
+      align-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 36px;
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 720;
+      line-height: 1.25;
+    }
+
+    .product {
+      position: relative;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 14px;
+    }
+
+    .app-window {
+      position: relative;
+      min-height: 515px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: float-in 900ms var(--ease) 160ms both, soft-float 6s var(--ease) 1.2s infinite;
+    }
+
+    .window-bar {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(237, 244, 238, 0.84);
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--amber);
+    }
+
+    .dot:first-child {
+      background: var(--coral);
+    }
+
+    .dot:last-child {
+      background: var(--green);
+    }
+
+    .window-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 790;
+    }
+
+    .window-grid {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      min-height: 473px;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--line);
+      padding: 18px 14px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      background: rgba(247, 248, 242, 0.72);
+    }
+
+    .side-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .side-pill {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .side-pill::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+    }
+
+    .main-panel {
+      position: relative;
+      padding: 22px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 16px;
+    }
+
+    .doc-strip {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .file-chip {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      width: fit-content;
+      padding: 8px 11px;
+      border-radius: 7px;
+      background: var(--ink);
+      color: var(--lime);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    .status-chip {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(24, 166, 111, 0.14);
+      color: #0f724b;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .document {
+      position: relative;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--white);
+      overflow: hidden;
+    }
+
+    .text-line {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(21, 24, 21, 0.12);
+    }
+
+    .text-line.short {
+      width: 58%;
+    }
+
+    .text-line.medium {
+      width: 76%;
+    }
+
+    .redaction {
+      position: relative;
+      width: 82%;
+      min-height: 30px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 103, 92, 0.24);
+      background: rgba(255, 103, 92, 0.09);
+      overflow: hidden;
+    }
+
+    .redaction::before {
+      content: "";
+      position: absolute;
+      inset: 7px auto 7px 8px;
+      width: 0;
+      border-radius: 4px;
+      background: var(--coral);
+      animation: redact-sweep 4.8s var(--ease) infinite;
+    }
+
+    .placeholder {
+      min-height: 30px;
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 5px;
+      background: var(--ink);
+      color: var(--lime);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      font-weight: 780;
+    }
+
+    .restore-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .restore-item {
+      min-height: 76px;
+      display: grid;
+      align-content: center;
+      gap: 6px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(247, 248, 242, 0.8);
+    }
+
+    .restore-item b {
+      font-size: 13px;
+      line-height: 1.1;
+    }
+
+    .restore-item span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 690;
+    }
+
+    .vault-badge {
+      position: absolute;
+      right: 28px;
+      bottom: 122px;
+      width: 126px;
+      height: 126px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, var(--ink), #29312b);
+      color: var(--white);
+      box-shadow: 0 20px 60px rgba(21, 24, 21, 0.24);
+      animation: vault-pulse 4.8s var(--ease) infinite;
+    }
+
+    .vault-badge svg {
+      width: 46px;
+      height: 46px;
+    }
+
+    .packet {
+      position: absolute;
+      z-index: 3;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      background: var(--blue);
+      box-shadow: 0 0 0 7px rgba(45, 114, 255, 0.12);
+      animation: packet-path 4.8s linear infinite;
+    }
+
+    .packet.two {
+      animation-delay: 1.6s;
+      background: var(--green);
+      box-shadow: 0 0 0 7px rgba(24, 166, 111, 0.12);
+    }
+
+    .packet.three {
+      animation-delay: 3.2s;
+      background: var(--coral);
+      box-shadow: 0 0 0 7px rgba(255, 103, 92, 0.12);
+    }
+
+    .proof-band {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      animation: fade-up 760ms var(--ease) 360ms both;
+    }
+
+    .proof {
+      min-height: 124px;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.76);
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .proof::after {
+      content: "";
+      position: absolute;
+      left: 15px;
+      right: 15px;
+      bottom: 12px;
+      height: 4px;
+      border-radius: 999px;
+      transform-origin: left;
+      transform: scaleX(0);
+      background: var(--proof-color, var(--green));
+      animation: proof-line 1s var(--ease) forwards;
+      animation-delay: calc(500ms + var(--i, 0) * 120ms);
+    }
+
+    .proof h3 {
+      font-size: 18px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .proof p {
+      padding-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+      font-weight: 690;
+    }
+
+    .status {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      color: #94651c;
+      font-weight: 830;
+    }
+
+    .status::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--amber);
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float-in {
+      from {
+        opacity: 0;
+        transform: translateY(24px) rotate(1deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    @keyframes soft-float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-7px);
+      }
+    }
+
+    @keyframes redact-sweep {
+      0%, 12% {
+        width: 0;
+      }
+      36%, 82% {
+        width: 62%;
+      }
+      100% {
+        width: 0;
+      }
+    }
+
+    @keyframes vault-pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.035);
+      }
+    }
+
+    @keyframes packet-path {
+      0% {
+        left: 54%;
+        top: 24%;
+        opacity: 0;
+      }
+      13% {
+        opacity: 1;
+      }
+      50% {
+        left: 68%;
+        top: 58%;
+      }
+      88% {
+        opacity: 1;
+      }
+      100% {
+        left: 79%;
+        top: 70%;
+        opacity: 0;
+      }
+    }
+
+    @keyframes proof-line {
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    @media (max-width: 1060px) {
+      .page {
+        padding: 24px;
+      }
+
+      .poster {
+        min-height: auto;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 64px;
+      }
+
+      .lead {
+        font-size: 21px;
+      }
+
+      .app-window {
+        min-height: 500px;
+      }
+
+      .proof-band {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 18px;
+      }
+
+      .topline,
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 44px;
+      }
+
+      .lead {
+        font-size: 18px;
+      }
+
+      .metrics,
+      .proof-band,
+      .restore-row {
+        grid-template-columns: 1fr;
+      }
+
+      .window-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .side-title {
+        grid-column: 1 / -1;
+      }
+
+      .doc-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .vault-badge,
+      .packet {
+        display: none;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .sidebar {
+        grid-template-columns: 1fr;
+      }
+
+      .main-panel {
+        padding: 16px;
+      }
+
+      .file-chip,
+      .status-chip,
+      .tag {
+        white-space: normal;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="poster" aria-label="One page portfolio presentation">
+      <header class="topline">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="10" width="16" height="10" rx="2"></rect>
+              <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+            </svg>
+          </span>
+          Local PII Anonymizer
+        </div>
+        <span>Portfolio snapshot · local-first privacy engineering</span>
+      </header>
+
+      <div class="hero">
+        <div class="story">
+          <div class="eyebrow">General overview</div>
+          <h1>LLM-safe document work, without shipping raw PII.</h1>
+          <p class="lead">A local-first RU/EN PII and PHI pseudonymization system with API, UI, CLI, encrypted vault restore, tenant isolation, audit events, metrics, and an explicit compliance boundary.</p>
+
+          <div class="tags" aria-label="Project capabilities">
+            <span class="tag dark">Reversible pseudonymization</span>
+            <span class="tag">HIPAA Safe Harbor mode</span>
+            <span class="tag">RU + EN detection</span>
+            <span class="tag">Local Ollama fallback</span>
+          </div>
+
+          <div class="metrics" aria-label="Project metrics">
+            <div class="metric">
+              <strong>367</strong>
+              <span>tests collected</span>
+            </div>
+            <div class="metric">
+              <strong>15</strong>
+              <span>architecture decisions</span>
+            </div>
+            <div class="metric">
+              <strong>0.9997</strong>
+              <span>reported macro F1 on presidio_multi</span>
+            </div>
+            <div class="metric">
+              <strong>3</strong>
+              <span>vault backends</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product" aria-label="Animated product workflow illustration">
+          <div class="app-window">
+            <div class="window-bar">
+              <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <span class="window-title">anonymize → safe text → restore</span>
+            </div>
+            <div class="window-grid">
+              <aside class="sidebar" aria-label="Controls">
+                <span class="side-title">Controls</span>
+                <span class="side-pill">Language: auto</span>
+                <span class="side-pill">Safe Harbor</span>
+                <span class="side-pill">Tenant: default</span>
+                <span class="side-pill">Vault: encrypted</span>
+              </aside>
+              <div class="main-panel">
+                <div class="doc-strip">
+                  <span class="file-chip">contract_ru_en.pdf</span>
+                  <span class="status-chip">detected 24 spans</span>
+                </div>
+                <div class="document">
+                  <span class="text-line medium"></span>
+                  <span class="redaction"></span>
+                  <span class="placeholder">&lt;PERSON_0&gt;</span>
+                  <span class="text-line"></span>
+                  <span class="redaction"></span>
+                  <span class="placeholder">&lt;PHONE_NUMBER_1&gt;</span>
+                  <span class="text-line short"></span>
+                </div>
+                <div class="restore-row">
+                  <div class="restore-item">
+                    <b>Detect</b>
+                    <span>Regex, Presidio/spaCy, medical NER, optional local fallback</span>
+                  </div>
+                  <div class="restore-item">
+                    <b>Protect</b>
+                    <span>AES-GCM vault values with row-bound authentication</span>
+                  </div>
+                  <div class="restore-item">
+                    <b>Restore</b>
+                    <span>document_id maps placeholders back under tenant scope</span>
+                  </div>
+                </div>
+                <span class="packet"></span>
+                <span class="packet two"></span>
+                <span class="packet three"></span>
+                <div class="vault-badge" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    <path d="M12 15v2"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof-band" aria-label="Evidence and status">
+        <article class="proof" style="--i: 0; --proof-color: var(--green)">
+          <h3>Product surface</h3>
+          <p>FastAPI integration, Streamlit operator UI, batch CLI, and hardened Docker Compose stack.</p>
+        </article>
+        <article class="proof" style="--i: 1; --proof-color: var(--blue)">
+          <h3>Security controls</h3>
+          <p>Tenant-scoped vault rows, API-key auth, rate limits, request-size guards, audit metadata, and erasure endpoint.</p>
+        </article>
+        <article class="proof" style="--i: 2; --proof-color: var(--coral)">
+          <h3>Evaluation posture</h3>
+          <p>Regression-gated precision/recall harness with curated and synthetic documents, plus clear warnings about synthetic limits.</p>
+        </article>
+        <article class="proof" style="--i: 3; --proof-color: var(--amber)">
+          <h3>Launch boundary</h3>
+          <p><span class="status">Amber</span> · not certified for production PII without legal review, representative eval data, retention policy, and deployment hardening.</p>
+        </article>
+      </div>
+
+      <footer class="footer">
+        <span>Built as a portfolio artifact from the project README, architecture docs, eval report, compliance mapping, backlog, and status one-pager.</span>
+        <span>Default claim: pseudonymization, not certified anonymization.</span>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
