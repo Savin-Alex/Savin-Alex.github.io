@@ -12,11 +12,6 @@ Privacy-first AI-ассистент для live-разговоров, интер
 
 Desktop-продукт, который даёт пользователю live-транскрипт и AI-подсказки прямо во время разговора, сохраняя контроль над privacy, fallback-поведением и режимами обработки аудио.
 
-<figure style="margin:1.6em 0;">
-<iframe src="{{ '/demos/ai-consul.ru.html' | relative_url }}" title="Интерактивное демо: AI Consul live-сессия" loading="lazy" style="width:100%;height:640px;border:1px solid #e2e6ee;border-radius:8px;"></iframe>
-<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Анимация живой сессии: транскрипт, аудио-волны и генерация подсказок. <a href="{{ '/demos/ai-consul.ru.html' | relative_url }}" target="_blank" rel="noopener">Открыть в полном окне ↗</a></figcaption>
-</figure>
-
 ## Паспорт проекта
 
 | Поле | Содержание |
@@ -46,12 +41,10 @@ Desktop-продукт, который даёт пользователю live-т
 
 ## Обзор продукта
 
-![UI overview](../docs/images/ui-overview.svg)
-
-![Privacy onboarding](../docs/images/onboarding-privacy.png)
-![Main session screen](../docs/images/session-home.png)
-![Settings panel](../docs/images/settings-panel.png)
-![Transcript window](../docs/images/transcript-window.png)
+<figure class="demo-figure">
+<iframe class="demo-frame demo-consul" src="{{ '/demos/ai-consul.ru.html' | relative_url }}" title="Интерактивное демо: AI Consul live-сессия" loading="lazy"></iframe>
+<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Интерактивная анимация живой сессии: транскрипт, аудио-волны и генерация подсказок. <a href="{{ '/demos/ai-consul.ru.html' | relative_url }}" target="_blank" rel="noopener">Открыть в полном окне ↗</a></figcaption>
+</figure>
 
 ## Продуктовые решения
 
@@ -94,23 +87,6 @@ Desktop-продукт, который даёт пользователю live-т
 
 Один реализовался (R1), один снижен (R2), два открыты (R3–R4) — честно о том, что ещё не доказано. R1 и строка про холодный старт в метриках — одна история: риск выявлен, реализовался, измерён ущерб, закрыт.
 
-## Архитектура
-
-![Architecture diagram](../docs/images/architecture.svg)
-
-AI Consul работает как multi-window Electron-приложение. Renderer отвечает за пользовательские окна и захват аудио в браузерном слое; main process управляет оркестрацией сессии и IPC. Слой транскрибации сначала пробует streaming-путь и переходит на batch-обработку, если live-маршрут недоступен. Вывод транскрипта объединяется с контекстом и prompt-логикой, после чего подсказки отправляются в UI.
-
-## Routing и fallback-сценарии
-
-![Pipeline and fallback diagram](../docs/images/pipeline.svg)
-
-Ключевая идея — не один конкретный model/backend, а управляемая стратегия обработки:
-
-- Сначала пробовать лучший доступный путь.
-- Переходить на fallback без разрушения user experience.
-- Делать local/cloud trade-offs видимыми, а не скрытыми.
-- Проектировать graceful degradation как часть продукта.
-
 ## Ретро / Lessons Learned
 
 - **Что сработало:** относиться к производительности как к эксперименту — воспроизводимый A/B-харнесс + инструментирование каждого коммита превратили расплывчатое «тормозит» в измеренный выигрыш по worst-observed-задержке (с ~23 с до <1 с); смена алгоритма стала решением по данным, а не догадкой.
@@ -120,7 +96,7 @@ AI Consul работает как multi-window Electron-приложение. Re
 ## Статус
 
 - Репозиторий приватный.
-- В публичном кейсе доступны скриншоты, диаграмма архитектуры, диаграмма пайплайна и продуктовый фрейминг.
+- В публичном кейсе доступны интерактивное демо, продуктовый фрейминг и измеренный A/B-бенчмарк.
 - Перед production-релизом нужны более широкие формальные бенчмарки, security review, packaging hardening и более широкое user testing.
 
 ## Стек

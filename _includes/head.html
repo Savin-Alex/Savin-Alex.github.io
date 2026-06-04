@@ -21,4 +21,56 @@
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
   {%- endif -%}
+  <style>
+    /* Demo embeds break out wider than the text column so each demo renders in its
+       desktop layout; the auto-fit script below removes any inner scrollbar. */
+    figure.demo-figure {
+      margin: 1.6em 0;
+      margin-left: calc(50% - min(48vw, 590px));
+      margin-right: calc(50% - min(48vw, 590px));
+    }
+    figure.demo-figure figcaption { font-size: .9em; color: #667085; margin-top: .4em; }
+    iframe.demo-frame { display: block; width: 100%; border: 1px solid #e2e6ee; border-radius: 8px; background: #fff; }
+    iframe.demo-pipeline { height: 760px; }
+    iframe.demo-pii { height: 1000px; }
+    iframe.demo-consul { aspect-ratio: 16 / 9; height: auto; }
+    @media (max-width: 760px) {
+      iframe.demo-pipeline { height: 560px; }
+      iframe.demo-pii { height: 680px; }
+    }
+  </style>
+  <script>
+    /* Auto-fit demo iframes to their content so they never need an inner scrollbar.
+       Same-origin only (the demos are served from this site). Grows to content;
+       re-baselines on resize; watches dynamic demos (e.g. AI Consul typing) via ResizeObserver. */
+    (function () {
+      function measure(f) {
+        var d = f.contentWindow.document, e = d.documentElement, b = d.body;
+        return Math.max(e ? e.scrollHeight : 0, b ? b.scrollHeight : 0, b ? b.offsetHeight : 0);
+      }
+      function grow(f) {
+        try { var h = measure(f); if (h && h > f.clientHeight + 1) { f.style.height = h + 'px'; } } catch (e) {}
+      }
+      function grow2(f) { grow(f); requestAnimationFrame(function () { grow(f); }); }
+      function watch(f) {
+        try {
+          var w = f.contentWindow, RO = w.ResizeObserver || window.ResizeObserver;
+          if (!RO) return;
+          var ro = new RO(function () { grow(f); });
+          ro.observe(w.document.documentElement);
+          if (w.document.body) ro.observe(w.document.body);
+        } catch (e) {}
+      }
+      function init(f) { f.addEventListener('load', function () { grow2(f); watch(f); }); grow2(f); }
+      function all(fn) { var fs = document.querySelectorAll('iframe.demo-frame'); for (var i = 0; i < fs.length; i++) fn(fs[i]); }
+      function start() { all(init); }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', start); } else { start(); }
+      window.addEventListener('load', function () { all(grow2); });
+      var t;
+      window.addEventListener('resize', function () {
+        clearTimeout(t);
+        t = setTimeout(function () { all(function (f) { f.style.height = ''; grow2(f); }); }, 150);
+      });
+    })();
+  </script>
 </head>

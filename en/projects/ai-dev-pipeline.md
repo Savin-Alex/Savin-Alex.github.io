@@ -10,8 +10,8 @@ A production-like prototype (2026): a three-agent workflow that takes a small ta
 
 The point is to show that GenAI/LLM in delivery is not "one-shot code generation" but a controlled process with quality, risk, and cost in view.
 
-<figure style="margin:1.6em 0;">
-<iframe src="{{ '/demos/ai-dev-pipeline.html' | relative_url }}" title="Interactive demo: Multi-Agent AI Development Pipeline" loading="lazy" style="width:100%;height:580px;border:1px solid #e2e6ee;border-radius:8px;"></iframe>
+<figure class="demo-figure">
+<iframe class="demo-frame demo-pipeline" src="{{ '/demos/ai-dev-pipeline.html' | relative_url }}" title="Interactive demo: Multi-Agent AI Development Pipeline" loading="lazy"></iframe>
 <figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Interactive animation of the Jira → PR workflow. <a href="{{ '/demos/ai-dev-pipeline.html' | relative_url }}" target="_blank" rel="noopener">Open full screen ↗</a></figcaption>
 </figure>
 

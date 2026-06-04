@@ -12,11 +12,6 @@ Privacy-first AI assistant for live conversations, interviews, meetings, and lea
 
 AI Consul is a desktop product that gives users live transcripts and AI suggestions during a conversation while keeping privacy, fallback behavior, and audio-processing modes visible and controllable.
 
-<figure style="margin:1.6em 0;">
-<iframe src="{{ '/demos/ai-consul.html' | relative_url }}" title="Interactive demo: AI Consul live session" loading="lazy" style="width:100%;height:640px;border:1px solid #e2e6ee;border-radius:8px;"></iframe>
-<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Live-session animation: transcript, audio waveforms, and suggestion generation. <a href="{{ '/demos/ai-consul.html' | relative_url }}" target="_blank" rel="noopener">Open full screen ↗</a></figcaption>
-</figure>
-
 ## Project Passport
 
 | Field | Content |
@@ -46,12 +41,10 @@ AI Consul is a desktop product that gives users live transcripts and AI suggesti
 
 ## Product Experience
 
-![UI overview](../../docs/images/ui-overview.svg)
-
-![Privacy onboarding](../../docs/images/onboarding-privacy.png)
-![Main session screen](../../docs/images/session-home.png)
-![Settings panel](../../docs/images/settings-panel.png)
-![Transcript window](../../docs/images/transcript-window.png)
+<figure class="demo-figure">
+<iframe class="demo-frame demo-consul" src="{{ '/demos/ai-consul.html' | relative_url }}" title="Interactive demo: AI Consul live session" loading="lazy"></iframe>
+<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Interactive live-session animation: transcript, audio waveforms, and suggestion generation. <a href="{{ '/demos/ai-consul.html' | relative_url }}" target="_blank" rel="noopener">Open full screen ↗</a></figcaption>
+</figure>
 
 ## Product Decisions
 
@@ -94,23 +87,6 @@ Measured on paired ~1-hour sessions, single machine (Apple Silicon, small.en); i
 
 One realized (R1), one mitigated (R2), two open (R3–R4) — honest about what is still unproven. R1 here and the cold-start row in the metrics are the same story: a risk identified, watched as it realized, measured, and closed.
 
-## Architecture
-
-![Architecture diagram](../../docs/images/architecture.svg)
-
-AI Consul runs as a multi-window Electron app. The renderer handles user-facing windows and browser-based audio capture; the main process manages session orchestration and IPC. The transcription layer tries a streaming path first and falls back to batch processing when the live route is unavailable. Transcript output is combined with context and prompt logic, and suggestions are sent to the UI.
-
-## Routing and Fallback
-
-![Pipeline and fallback diagram](../../docs/images/pipeline.svg)
-
-The core idea is not one specific model/backend but a managed processing strategy:
-
-- Try the best available path first.
-- Fall back without breaking the user experience.
-- Make local/cloud trade-offs visible rather than hidden.
-- Design graceful degradation as part of the product.
-
 ## Retro / Lessons Learned
 
 - **What worked:** treating performance as an experiment — a repeatable A/B harness plus per-commit instrumentation turned a vague "feels laggy" into a measured worst-observed-lag win (~23s → <1s), making the decode-policy switch a data decision instead of a guess.
@@ -120,7 +96,7 @@ The core idea is not one specific model/backend but a managed processing strateg
 ## Status
 
 - Private repository.
-- Public case study includes screenshots, architecture diagram, pipeline diagram, and product framing.
+- Public case study includes an interactive demo, product framing, and a measured A/B benchmark.
 - Production readiness would require broader formal benchmarks, security review, packaging hardening, and wider user testing.
 
 ## Stack

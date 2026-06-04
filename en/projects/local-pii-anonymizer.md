@@ -8,8 +8,8 @@ title: Local PII Anonymizer
 
 Local-first offline service for reversible PII/PHI pseudonymization in RU/EN documents, designed for 152-FZ, GDPR, and HIPAA Safe Harbor contexts — so legal, HR, and clinical teams can safely prepare sensitive documents for downstream LLM/workflow use while keeping reversible mappings under operator control.
 
-<figure style="margin:1.6em 0;">
-<iframe src="{{ '/demos/local-pii-anonymizer.html' | relative_url }}" title="Interactive demo: Local PII Anonymizer" loading="lazy" style="width:100%;height:720px;border:1px solid #e2e6ee;border-radius:8px;"></iframe>
+<figure class="demo-figure">
+<iframe class="demo-frame demo-pii" src="{{ '/demos/local-pii-anonymizer.html' | relative_url }}" title="Interactive demo: Local PII Anonymizer" loading="lazy"></iframe>
 <figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Animation: data redaction, flow through the detection cascade, and the encrypted vault. <a href="{{ '/demos/local-pii-anonymizer.html' | relative_url }}" target="_blank" rel="noopener">Open full screen ↗</a></figcaption>
 </figure>
 

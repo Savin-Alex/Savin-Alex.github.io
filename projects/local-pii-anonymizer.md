@@ -8,8 +8,8 @@ title: Local PII Anonymizer
 
 Локальный (offline) сервис обратимой псевдонимизации ПДн и PHI для RU/EN документов. Проектировался под compliance-контуры — 152-ФЗ, GDPR, HIPAA Safe Harbor — чтобы юристы, HR и клиники могли безопасно готовить конфиденциальные документы для внешних LLM, сохраняя обратимые маппинги под контролем оператора.
 
-<figure style="margin:1.6em 0;">
-<iframe src="{{ '/demos/local-pii-anonymizer.ru.html' | relative_url }}" title="Интерактивное демо: Local PII Anonymizer" loading="lazy" style="width:100%;height:720px;border:1px solid #e2e6ee;border-radius:8px;"></iframe>
+<figure class="demo-figure">
+<iframe class="demo-frame demo-pii" src="{{ '/demos/local-pii-anonymizer.ru.html' | relative_url }}" title="Интерактивное демо: Local PII Anonymizer" loading="lazy"></iframe>
 <figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Анимация: редакция данных, поток через каскад детекции и зашифрованный vault. <a href="{{ '/demos/local-pii-anonymizer.ru.html' | relative_url }}" target="_blank" rel="noopener">Открыть в полном окне ↗</a></figcaption>
 </figure>
 
