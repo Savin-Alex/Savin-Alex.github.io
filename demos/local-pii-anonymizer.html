@@ -754,6 +754,40 @@
         transition-duration: 1ms !important;
       }
     }
+
+    /* ===== Dark theme override (matches the portfolio dark site) ===== */
+    :root {
+      color-scheme: dark;
+      --paper: #0c100c; --paper-2: #0e140f; --ink: #e7ece6; --muted: #9aa79a;
+      --line: rgba(255,255,255,0.12); --line-strong: rgba(255,255,255,0.2);
+    }
+    html { background: var(--paper); }
+    body {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(135deg, var(--paper), var(--paper-2));
+      background-size: 42px 42px, 42px 42px, 100% 100%;
+    }
+    .brand-mark { background: #1b231d; }
+    .lead { color: #c4ccc4; }
+    .eyebrow { background: rgba(255,255,255,.05); }
+    .tag { background: rgba(255,255,255,.06); }
+    .tag.dark { background: #1b231d; border-color: #2a332b; }
+    .metric { background: rgba(255,255,255,.04); }
+    .app-window { background: #12160f; }
+    .window-bar { background: rgba(255,255,255,.04); }
+    .sidebar { background: rgba(255,255,255,.03); }
+    .side-pill { background: rgba(255,255,255,.05); }
+    .file-chip { background: #1b231d; }
+    .status-chip { background: rgba(24,166,111,.18); color: #5fd99a; }
+    .document { background: #11150f; }
+    .text-line { background: rgba(255,255,255,.14); }
+    .placeholder { background: #1b231d; }
+    .restore-item { background: rgba(255,255,255,.04); }
+    .vault-badge { background: linear-gradient(145deg, #1c241e, #29312b); }
+    .proof { background: rgba(255,255,255,.05); }
+    .status { color: #e0b256; }
   </style>
 </head>
 <body>

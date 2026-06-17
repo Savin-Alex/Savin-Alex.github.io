@@ -772,6 +772,41 @@
           scroll-behavior: auto !important;
         }
       }
+
+      /* ===== Dark theme override (matches the portfolio dark site) ===== */
+      :root {
+        color-scheme: dark;
+        --ink: #e4e8ee; --muted: #97a1b0; --line: #2a313c;
+        --panel: #161b24; --panel-soft: #1b212c; --teal-dark: #5fd6c6;
+      }
+      body {
+        background:
+          linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(255,255,255,.05) 1px, transparent 1px),
+          linear-gradient(135deg, #0b0f14 0%, #0d1217 45%, #0c1016 100%);
+        background-size: 42px 42px, 42px 42px, 100% 100%;
+      }
+      .showcase { background: rgba(20,25,33,.78); border-color: rgba(255,255,255,.10); }
+      .pill { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.10); color: #c0c8d4; }
+      .control-panel, .conversation-panel, .answer-panel { background: rgba(20,25,33,.82); border-color: rgba(255,255,255,.10); }
+      .panel-header { background: rgba(255,255,255,.04); border-bottom-color: rgba(255,255,255,.08); }
+      .panel-badge { background: rgba(24,169,153,.18); }
+      .session-button { background: var(--teal); color: #052420; }
+      .source-card { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.10); }
+      .source-icon { background: rgba(24,169,153,.16); }
+      .source-card.system .source-icon { background: rgba(47,128,237,.16); }
+      .route-step { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.10); }
+      .empty-state { border-color: rgba(255,255,255,.16); }
+      .entry { background: rgba(255,255,255,.04); border-left-color: #2a313c; }
+      .entry p { color: #c8cfda; }
+      .transcript-stream::-webkit-scrollbar-thumb { background: rgba(255,255,255,.16); }
+      .question-context { background: rgba(47,128,237,.12); border-color: rgba(47,128,237,.28); }
+      .question-context span { color: #7fb0f0; }
+      .question-context p { color: #c8cfda; }
+      .direct-answer { background: #11161f; }
+      .timeline-step { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.10); color: #aab3c0; }
+      .timeline-step::before { background: #3a4150; }
+      .timeline-step.active { background: rgba(24,169,153,.14); border-color: rgba(24,169,153,.40); }
     </style>
   </head>
   <body>
