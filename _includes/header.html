@@ -28,9 +28,11 @@ homepage body. The toggle/home target the correct language by detecting "/en/" i
 
       <div class="trigger">
         {%- if is_en -%}
-          <a class="page-link" href="{{ "/" | relative_url }}">RU</a>
+          {%- if page.url contains "/en/projects/" -%}{%- assign alt_lang_url = page.url | remove_first: "/en" -%}{%- else -%}{%- assign alt_lang_url = "/" -%}{%- endif -%}
+          <a class="page-link" href="{{ alt_lang_url | relative_url }}">RU</a>
         {%- else -%}
-          <a class="page-link" href="{{ "/en/" | relative_url }}">EN</a>
+          {%- if page.url contains "/projects/" -%}{%- assign alt_lang_url = "/en" | append: page.url -%}{%- else -%}{%- assign alt_lang_url = "/en/" -%}{%- endif -%}
+          <a class="page-link" href="{{ alt_lang_url | relative_url }}">EN</a>
         {%- endif -%}
       </div>
     </nav>
