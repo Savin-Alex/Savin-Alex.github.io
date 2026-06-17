@@ -5,17 +5,36 @@
   {%- seo -%}
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
   <link rel="icon" type="image/svg+xml" href="{{ "/favicon.svg" | relative_url }}">
-  <meta name="theme-color" content="#2B579A">
+  <meta name="theme-color" content="#09090b">
   <style>
-    a { color: #2B579A; }
-    h1, h2, h3 { color: #1f2d3d; }
-    h2 { border-bottom: 1px solid #e8e8e8; padding-bottom: .2em; margin-top: 1.4em; }
+    /* Dark theme — matches the homepage one-pager (overrides minima's light defaults) */
+    :root { color-scheme: dark; }
+    html, body { background: #09090b; color: #e4e4e7; }
+    .site-header { background: rgba(9,9,11,.9); border-top: 0; border-bottom: 1px solid #27272a; }
+    .site-title, .site-title:visited { color: #fafafa !important; }
+    .site-nav .page-link, .site-nav .page-link:visited { color: #a1a1aa; }
+    .site-nav .page-link:hover { color: #fafafa; }
+    .site-nav .menu-icon > svg { fill: #a1a1aa; }
+    .page-content, .post-content { background: #09090b; }
+    .site-footer { background: #09090b; border-top: 1px solid #27272a; color: #a1a1aa; }
+    .site-footer a, .footer-col-wrapper { color: #a1a1aa; }
+    a { color: #60a5fa; }
+    a:hover { color: #93c5fd; }
+    h1, h2, h3, h4, h5, h6 { color: #fafafa; }
+    h2 { border-bottom: 1px solid #27272a; padding-bottom: .2em; margin-top: 1.4em; }
+    strong, b { color: #fafafa; }
     table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: .95em; }
-    th, td { border: 1px solid #e2e6ee; padding: .5em .7em; text-align: left; vertical-align: top; }
-    th { background: #f4f6fb; }
-    tbody tr:nth-child(even) td { background: #fafbfc; }
-    code { background: #f4f6fb; padding: .1em .3em; border-radius: 3px; }
+    th, td { border: 1px solid #27272a; padding: .5em .7em; text-align: left; vertical-align: top; }
+    td { background: #0d0d11; }
+    th { background: #18181b; color: #fafafa; }
+    tbody tr:nth-child(even) td { background: #141418; }
+    code { background: #1b1b20; color: #e4e4e7; padding: .1em .3em; border-radius: 3px; }
+    pre { background: #141418; border: 1px solid #27272a; }
+    pre code { background: transparent; }
+    blockquote { color: #a1a1aa; border-left: 4px solid #3f3f46; }
+    hr { border: 0; border-top: 1px solid #27272a; }
     .site-avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin: .3em 0; }
+    @media (max-width: 600px) { .site-nav { background-color: #141418; border-color: #27272a; } }
   </style>
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
@@ -30,7 +49,7 @@
       margin-right: calc(50% - min(48vw, 590px));
     }
     figure.demo-figure figcaption { font-size: .9em; color: #667085; margin-top: .4em; }
-    iframe.demo-frame { display: block; width: 100%; border: 1px solid #e2e6ee; border-radius: 8px; background: #fff; }
+    iframe.demo-frame { display: block; width: 100%; border: 1px solid #27272a; border-radius: 8px; background: #0d0d11; }
     iframe.demo-pipeline { height: 760px; }
     iframe.demo-pii { height: 1000px; }
     iframe.demo-consul, iframe.demo-telecom { aspect-ratio: 16 / 9; height: auto; }
