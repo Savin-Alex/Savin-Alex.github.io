@@ -70,7 +70,7 @@ The full register has **50+ risks** with classification, source, root cause, pro
 
 ## Retro
 
-- **Went well:** the full artifact cycle (passport, 40+ MoSCoW, estimate, 15-competitor analysis, 21 risks, Gantt, Figma) reduced a broad idea to a defensible MVP; prioritization and risk analysis made scope controllable.
+- **Went well:** the full artifact cycle (passport, 40+ MoSCoW, estimate, 15-competitor analysis, 50+ risks, Gantt, Figma) reduced a broad idea to a defensible MVP; prioritization and risk analysis made scope controllable.
 - **To improve:** the top risk was estimating from high-level requirements (backend underestimated); next time, do detailed analysis first → an accurate estimate, and avoid fixed price without a buffer.
 - **Key takeaway:** the PM/BA value is turning a wish list into a managed MVP with a justified estimate, clear priorities, and understood risks.
 

@@ -27,7 +27,7 @@ Privacy-first AI-ассистент для live-разговоров, интер
 - Определён local-first/hybrid подход к обработке аудио с явными privacy и fallback controls.
 - Engine status, cost awareness и privacy settings вынесены в интерфейс, чтобы технические риски были видимы пользователю.
 
-**Стек:** Electron, TypeScript, React, Python, whisper.cpp
+**Стек:** Electron, TypeScript, React, Python/WhisperLiveKit, Ollama
 **CTA:** `Открыть case study`
 
 ## Local PII Anonymizer

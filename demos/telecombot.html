@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DemoTel KZ — Telegram Support Bot · Portfolio Animation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0f1b26;
+      --muted: #5a6b7b;
+      --line: #dde4ec;
+      --paper: #eef3f8;
+      --paper-2: #e6eef6;
+      --panel: #ffffff;
+      --tg: #229ed9;          /* telegram accent (non-text-on-fill) */
+      --tg-bubble: #12678f;   /* deeper blue: white text passes AA */
+      --ok: #1f9d57;
+      --ok-soft: rgba(31, 157, 87, 0.12);
+      --warn: #d98324;
+      --danger: #d6452c;
+      --danger-soft: rgba(214, 69, 44, 0.12);
+      --radius: 18px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; min-height: 100%; }
+    body {
+      display: grid; place-items: center; min-height: 100vh; overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(15,27,38,.05) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(15,27,38,.05) 1px, transparent 1px),
+        linear-gradient(135deg, var(--paper) 0%, var(--paper-2) 100%);
+      background-size: 44px 44px, 44px 44px, 100% 100%;
+      color: var(--ink); font-family: var(--font);
+    }
+
+    .stage {
+      position: relative; width: min(95vw, 1180px); aspect-ratio: 16 / 9;
+      display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+      background: rgba(255,255,255,.66); backdrop-filter: blur(6px);
+      border: 1px solid rgba(15,27,38,.10); border-radius: var(--radius);
+      box-shadow: 0 30px 80px -36px rgba(15,27,38,.45);
+      padding: clamp(14px, 1.8vw, 24px); gap: clamp(10px, 1.4vw, 16px);
+      overflow: hidden;
+    }
+
+    /* ---------- Top bar ---------- */
+    .bar { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--tg), #1c89bd); display: grid; place-items: center; flex: none; box-shadow: 0 6px 16px -6px var(--tg); }
+    .avatar svg { width: 22px; height: 22px; }
+    .bar .who { display: flex; flex-direction: column; line-height: 1.2; }
+    .bar .who b { font-size: clamp(14px, 1.4vw, 16px); letter-spacing: -.01em; }
+    .bar .who span { font-size: 11.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+    .dot-on { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 0 rgba(31,157,87,.5); animation: ping 2.4s infinite; }
+    @keyframes ping { 70% { box-shadow: 0 0 0 7px rgba(31,157,87,0); } 100% { box-shadow: 0 0 0 0 rgba(31,157,87,0); } }
+    .bar .spacer { flex: 1; }
+    .queue-pill { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--muted); white-space: nowrap; transition: all .4s var(--ease); }
+    .queue-pill.ok { color: #146a3b; border-color: rgba(31,157,87,.4); background: var(--ok-soft); }
+    .queue-pill.fraud { color: #9c2c19; border-color: rgba(214,69,44,.45); background: var(--danger-soft); }
+    .tag-demo { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .14em; color: var(--tg-bubble); border: 1px dashed rgba(34,158,217,.55); border-radius: 7px; padding: 5px 8px; }
+
+    /* ---------- Body split ---------- */
+    .body { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: clamp(12px, 1.6vw, 20px); min-height: 0; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+    .panel-h { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 12px 16px 8px; }
+
+    /* ---------- Chat ---------- */
+    .chat { background: linear-gradient(180deg, #f7fafd, #eef4fa); }
+    .msgs { flex: 1; min-height: 0; padding: 6px 16px 12px; display: flex; flex-direction: column; gap: 9px; justify-content: flex-end; overflow: hidden; }
+    .msg { max-width: 84%; padding: 9px 13px; border-radius: 16px; font-size: clamp(12.5px, 1.25vw, 14px); line-height: 1.4; opacity: 0; transform: translateY(8px) scale(.98); animation: pop .42s var(--ease) forwards; box-shadow: 0 2px 8px -4px rgba(15,27,38,.25); }
+    @keyframes pop { to { opacity: 1; transform: none; } }
+    .msg.bot { align-self: flex-start; background: #fff; color: var(--ink); border-bottom-left-radius: 6px; border: 1px solid var(--line); }
+    .msg.user { align-self: flex-end; background: var(--tg-bubble); color: #fff; border-bottom-right-radius: 6px; }
+    .msg .pii { font-family: var(--mono); font-size: .92em; background: rgba(15,27,38,.06); padding: 1px 6px; border-radius: 5px; }
+    .msg.user .pii { background: rgba(255,255,255,.22); }
+    .msg .meta { display: block; margin-top: 5px; font-family: var(--mono); font-size: 10px; opacity: .7; }
+    .contact-card { align-self: flex-end; display: inline-flex; align-items: center; gap: 9px; background: var(--tg-bubble); color: #fff; padding: 9px 13px; border-radius: 16px; border-bottom-right-radius: 6px; font-size: 12.5px; opacity: 0; transform: translateY(8px); animation: pop .42s var(--ease) forwards; }
+    .contact-card svg { width: 20px; height: 20px; flex: none; }
+    .typing { align-self: flex-start; display: inline-flex; gap: 4px; padding: 11px 14px; background: #fff; border: 1px solid var(--line); border-radius: 16px; border-bottom-left-radius: 6px; }
+    .typing i { width: 7px; height: 7px; border-radius: 50%; background: #9fb0c0; animation: blink 1.2s infinite; }
+    .typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%, 60%, 100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+    .kbd { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-top: 1px solid var(--line); background: #fff; }
+    .kbd span { font-size: 11.5px; color: #2c5f7d; background: #eaf4fb; border: 1px solid #d3e7f4; border-radius: 8px; padding: 5px 9px; transition: all .3s var(--ease); }
+    .kbd span.hot { background: var(--tg-bubble); color: #fff; border-color: var(--tg-bubble); }
+
+    /* ---------- Flow / pipeline ---------- */
+    .flow { padding: 6px 16px 14px; }
+    .flow-steps { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 7px; justify-content: center; }
+    .step { position: relative; display: flex; align-items: center; gap: 11px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fbfdff; transition: all .4s var(--ease); }
+    .step .ic { width: 30px; height: 30px; border-radius: 9px; background: #eef3f8; display: grid; place-items: center; flex: none; color: var(--muted); transition: all .4s var(--ease); }
+    .step .ic svg { width: 17px; height: 17px; }
+    .step .tx { min-width: 0; }
+    .step .tx b { display: block; font-size: 13px; letter-spacing: -.01em; }
+    .step .tx small { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+    .step .riskbadge { margin-left: auto; font-family: var(--mono); font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: #eef3f8; color: var(--muted); letter-spacing: .04em; transition: all .4s var(--ease); }
+    .step.active { border-color: var(--tg); background: #fff; box-shadow: 0 8px 22px -14px var(--tg); transform: translateX(2px); }
+    .step.active .ic { background: var(--tg-bubble); color: #fff; }
+    .step.done .ic { background: var(--ok-soft); color: var(--ok); }
+    .step .riskbadge.low { background: var(--ok-soft); color: #146a3b; }
+    .step .riskbadge.high { background: var(--danger-soft); color: #9c2c19; }
+
+    .outcomes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 9px; }
+    .oc { text-align: center; padding: 9px 6px; border: 1px solid var(--line); border-radius: 11px; background: #fbfdff; transition: all .4s var(--ease); }
+    .oc .label { display: block; font-size: 11.5px; font-weight: 600; }
+    .oc small { font-family: var(--mono); font-size: 9.5px; color: var(--muted); letter-spacing: .04em; }
+    .oc.on-ok { border-color: var(--ok); background: var(--ok-soft); box-shadow: 0 8px 20px -14px var(--ok); }
+    .oc.on-fraud { border-color: var(--danger); background: var(--danger-soft); box-shadow: 0 8px 20px -14px var(--danger); }
+    .oc.dim { opacity: .42; }
+    .oc.struck .label { text-decoration: line-through; }
+    .bypass { margin-top: 9px; font-size: 11.5px; color: #9c2c19; font-weight: 600; display: flex; align-items: center; gap: 7px; opacity: 0; transform: translateY(4px); transition: all .4s var(--ease); }
+    .bypass.show { opacity: 1; transform: none; }
+    .bypass svg { width: 15px; height: 15px; flex: none; }
+
+    /* ---------- Metrics ---------- */
+    .metrics { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .chip { font-family: var(--mono); font-size: 11.5px; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 7px; }
+    .chip b { color: var(--tg-bubble); }
+    .chip .g { color: #146a3b; }
+
+    /* ---------- Controls ---------- */
+    .controls { position: absolute; right: 16px; bottom: 14px; display: flex; gap: 7px; }
+    .controls button { width: 32px; height: 32px; border-radius: 9px; border: 1px solid var(--line); background: rgba(255,255,255,.9); color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: all .2s var(--ease); }
+    .controls button:hover { border-color: var(--tg); color: var(--tg); }
+    .controls button:focus-visible { outline: 2px solid var(--tg); outline-offset: 2px; }
+    .controls svg { width: 15px; height: 15px; }
+
+    @media (max-width: 760px) {
+      .stage { aspect-ratio: auto; min-height: 92vh; }
+      .body { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .msg, .contact-card { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" role="img" aria-label="Animated presentation of DemoTel KZ, a Telegram support bot with safety-aware routing">
+    <!-- Top bar -->
+    <div class="bar">
+      <div class="avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 4.5 2.5 11l6 2.2L18 7l-6.7 8 .3 4.5 3-3.5 4 2.8z"/></svg>
+      </div>
+      <div class="who">
+        <b>DemoTel KZ · Поддержка</b>
+        <span><i class="dot-on" aria-hidden="true"></i>бот · отвечает мгновенно</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="queue-pill" id="queue">Очередь: —</div>
+      <div class="tag-demo">DEMO</div>
+    </div>
+
+    <!-- Body -->
+    <div class="body">
+      <!-- Chat -->
+      <div class="panel chat">
+        <div class="panel-h">Telegram · приватный чат</div>
+        <div class="msgs" id="msgs" aria-hidden="true"></div>
+        <div class="kbd" id="kbd" aria-hidden="true">
+          <span data-k="Баланс">Баланс</span>
+          <span data-k="Пакеты">Пакеты</span>
+          <span data-k="Роуминг">Роуминг</span>
+          <span data-k="SIM/eSIM">SIM/eSIM</span>
+          <span data-k="Безопасность">Безопасность</span>
+          <span data-k="Оператор">Оператор</span>
+        </div>
+      </div>
+
+      <!-- Flow -->
+      <div class="panel flow">
+        <div class="panel-h">Маршрутизация · детерминированно, без LLM</div>
+        <div class="flow-steps" id="steps">
+          <div class="step" data-step="tg">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 4.5 2.5 11l6 2.2L18 7l-6.7 8 .3 4.5 3-3.5 4 2.8z"/></svg></span>
+            <span class="tx"><b>Telegram Bot API</b><small>update → webhook</small></span>
+          </div>
+          <div class="step" data-step="hook">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2.4"/></svg></span>
+            <span class="tx"><b>FastAPI webhook</b><small>secret token ✓</small></span>
+          </div>
+          <div class="step" data-step="pii">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+            <span class="tx"><b>Маскирование PII</b><small id="piiNote">MSISDN · ИИН · OTP · карта</small></span>
+          </div>
+          <div class="step" data-step="risk">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg></span>
+            <span class="tx"><b>Политика и риск</b><small>классификация запроса</small></span>
+            <span class="riskbadge" id="riskBadge">RISK</span>
+          </div>
+          <div class="step" data-step="router">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="12" r="2"/><path d="M8 6h6a2 2 0 0 1 2 2v2M8 18h6a2 2 0 0 0 2-2v-2"/></svg></span>
+            <span class="tx"><b>Роутер сценариев</b><small id="scenName">S01–S50</small></span>
+          </div>
+        </div>
+
+        <div class="outcomes" id="outcomes">
+          <div class="oc" data-oc="l1"><span class="label">L1 · авто</span><small>self-service</small></div>
+          <div class="oc" data-oc="secure"><span class="label">Secure Web App</span><small>OTP · KYC · оплата</small></div>
+          <div class="oc" data-oc="fraud"><span class="label">Fraud · L2</span><small>защищённый канал</small></div>
+        </div>
+        <div class="bypass" id="bypass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>Высокий риск минует L1-автоматизацию</div>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <span class="chip"><b>50</b> сценариев</span>
+      <span class="chip"><b>7</b> категорий + оператор</span>
+      <span class="chip"><span class="g">84/84</span> тестов</span>
+      <span class="chip"><span class="g">5/5</span> P0-блокеров закрыто</span>
+      <span class="chip"><b>0</b> LLM в проде</span>
+      <span class="chip">PII-safe</span>
+    </div>
+
+    <div class="controls">
+      <button id="toggle" type="button" aria-label="Пауза / продолжить"></button>
+      <button id="replay" type="button" aria-label="Повторить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var msgs = document.getElementById('msgs');
+      var steps = document.getElementById('steps');
+      var queue = document.getElementById('queue');
+      var riskBadge = document.getElementById('riskBadge');
+      var scenName = document.getElementById('scenName');
+      var piiNote = document.getElementById('piiNote');
+      var bypass = document.getElementById('bypass');
+      var kbd = document.getElementById('kbd');
+      var ocs = {}; document.querySelectorAll('.oc').forEach(function (o) { ocs[o.dataset.oc] = o; });
+      var stepEls = ['tg', 'hook', 'pii', 'risk', 'router'].map(function (s) { return steps.querySelector('[data-step="' + s + '"]'); });
+      var ICONS = {
+        pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
+        play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg>'
+      };
+
+      var SCENES = [
+        {
+          kbd: 'Баланс', user: 'Баланс', scenario: 'S02 · Баланс prepaid', risk: 'LOW', queue: 'Очередь: L1 · AUTO',
+          outcome: 'l1', pii: false,
+          bot: 'Баланс: <span class="pii">1 240 ₸</span>. Пакет: 12 ГБ из 20 ГБ, активен до 30.06.'
+        },
+        {
+          kbd: 'SIM/eSIM', contact: true, scenario: 'S01 · Привязка аккаунта', risk: 'LOW', queue: 'Очередь: привязка',
+          outcome: 'l1', pii: true, piiMask: '+7 700 ••• •• 55',
+          bot: 'Аккаунт привязан по контакту Telegram. Доступны баланс, пакеты и услуги.'
+        },
+        {
+          kbd: 'Безопасность', user: 'Украли телефон, перевыпустите SIM', scenario: 'Fraud · SIM-swap / кража', risk: 'HIGH',
+          queue: 'Очередь: FRAUD · L2', outcome: 'fraud', pii: false, bypass: true,
+          bot: 'Передаю в службу безопасности. Замена SIM выполняется только через защищённый канал с проверкой личности.'
+        }
+      ];
+
+      var timers = [], playing = true, sceneIdx = 0;
+      function wait(ms) { return new Promise(function (res) { timers.push(setTimeout(res, ms)); }); }
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+      function resetFlow() {
+        stepEls.forEach(function (s) { s.classList.remove('active', 'done'); });
+        Object.values(ocs).forEach(function (o) { o.className = 'oc'; });
+        riskBadge.className = 'riskbadge'; riskBadge.textContent = 'RISK';
+        bypass.classList.remove('show');
+        piiNote.textContent = 'MSISDN · ИИН · OTP · карта';
+        kbd.querySelectorAll('span').forEach(function (s) { s.classList.remove('hot'); });
+        queue.className = 'queue-pill'; queue.textContent = 'Очередь: —';
+      }
+
+      function addUser(scene) {
+        if (scene.contact) {
+          var c = document.createElement('div'); c.className = 'contact-card';
+          c.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>Поделиться контактом';
+          msgs.appendChild(c);
+        } else {
+          var m = document.createElement('div'); m.className = 'msg user'; m.textContent = scene.user;
+          msgs.appendChild(m);
+        }
+        trim();
+      }
+      function addBot(scene) {
+        var m = document.createElement('div'); m.className = 'msg bot';
+        m.innerHTML = scene.bot + '<span class="meta">' + scene.scenario + '</span>';
+        msgs.appendChild(m); trim();
+      }
+      function addTyping() {
+        var t = document.createElement('div'); t.className = 'typing'; t.id = 'typing';
+        t.innerHTML = '<i></i><i></i><i></i>'; msgs.appendChild(t); trim(); return t;
+      }
+      function trim() { while (msgs.children.length > 4) msgs.removeChild(msgs.firstChild); }
+
+      async function runScene(scene) {
+        resetFlow();
+        var hot = kbd.querySelector('[data-k="' + scene.kbd + '"]'); if (hot) hot.classList.add('hot');
+        addUser(scene);
+        await wait(700);
+        // walk pipeline
+        for (var i = 0; i < stepEls.length; i++) {
+          if (!playing) return;
+          stepEls[i].classList.add('active');
+          var key = stepEls[i].dataset.step;
+          if (key === 'pii') { piiNote.textContent = scene.pii ? (scene.piiMask + ' → замаскировано') : 'совпадений нет'; }
+          if (key === 'risk') {
+            riskBadge.textContent = scene.risk;
+            riskBadge.classList.add(scene.risk === 'HIGH' ? 'high' : 'low');
+          }
+          if (key === 'router') { scenName.textContent = scene.scenario; }
+          await wait(620);
+          stepEls[i].classList.remove('active'); stepEls[i].classList.add('done');
+        }
+        if (!playing) return;
+        // outcome
+        queue.textContent = scene.queue;
+        if (scene.outcome === 'fraud') {
+          queue.classList.add('fraud');
+          ocs.l1.classList.add('struck', 'dim'); ocs.secure.classList.add('dim');
+          ocs.fraud.classList.add('on-fraud');
+          bypass.classList.add('show');
+        } else {
+          queue.classList.add('ok');
+          ocs.l1.classList.add('on-ok'); ocs.secure.classList.add('dim'); ocs.fraud.classList.add('dim');
+        }
+        await wait(500);
+        if (!playing) return;
+        var typing = addTyping();
+        await wait(1100);
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        if (!playing) return;
+        addBot(scene);
+        await wait(2600);
+      }
+
+      async function loop() {
+        while (playing) {
+          await runScene(SCENES[sceneIdx]);
+          if (!playing) return;
+          sceneIdx = (sceneIdx + 1) % SCENES.length;
+          if (sceneIdx === 0) { await wait(300); }
+        }
+      }
+
+      // Controls
+      var toggle = document.getElementById('toggle');
+      toggle.innerHTML = ICONS.pause;
+      toggle.addEventListener('click', function () {
+        playing = !playing; toggle.innerHTML = playing ? ICONS.pause : ICONS.play;
+        if (playing) loop();
+      });
+      document.getElementById('replay').addEventListener('click', function () {
+        clearTimers(); msgs.innerHTML = ''; resetFlow(); sceneIdx = 0;
+        if (!playing) { playing = true; toggle.innerHTML = ICONS.pause; }
+        loop();
+      });
+
+      if (reduce) {
+        // Static, representative high-risk frame (no animation)
+        var s = SCENES[2];
+        addUser(s); addBot(s);
+        stepEls.forEach(function (st) { st.classList.add('done'); });
+        riskBadge.textContent = 'HIGH'; riskBadge.classList.add('high');
+        scenName.textContent = s.scenario; piiNote.textContent = 'совпадений нет';
+        queue.textContent = s.queue; queue.classList.add('fraud');
+        ocs.l1.classList.add('struck', 'dim'); ocs.secure.classList.add('dim'); ocs.fraud.classList.add('on-fraud');
+        bypass.classList.add('show');
+        kbd.querySelector('[data-k="Безопасность"]').classList.add('hot');
+        toggle.innerHTML = ICONS.play; playing = false;
+      } else {
+        loop();
+      }
+    })();
+  </script>
+</body>
+</html>

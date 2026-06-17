@@ -4,6 +4,7 @@ theme: minima
 markdown: kramdown
 plugins:
   - jekyll-feed
+  - jekyll-relative-links
 
 # Navigation is handled by a custom language-aware header (_includes/header.html),
 # so header_pages is intentionally omitted.

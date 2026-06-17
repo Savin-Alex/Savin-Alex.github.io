@@ -60,8 +60,8 @@
   <rect x="500" y="370" width="420" height="1" fill="#F1F5F9"/>
   <text x="524" y="370" fill="#64748B" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Companion Overlay  (always on top)</text>
   <rect x="524" y="390" width="372" height="52" rx="8" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1"/>
-  <text x="544" y="412" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="12">We reduced p95 latency from 1.2s to 340ms by switching</text>
-  <text x="544" y="428" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="12">to a local-first transcription pipeline with circuit breaker.</text>
+  <text x="544" y="412" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="12">We cut worst-observed commit lag from 23s to under 1s by</text>
+  <text x="544" y="428" fill="#3730A3" font-family="system-ui, -apple-system, sans-serif" font-size="12">switching the streaming decode to AlignAtt with local warmup.</text>
   <rect x="524" y="450" width="372" height="52" rx="8" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
   <text x="544" y="472" fill="#1E40AF" font-family="system-ui, -apple-system, sans-serif" font-size="12">The failover chain has 5 engines. WhisperLiveKit handles</text>
   <text x="544" y="488" fill="#1E40AF" font-family="system-ui, -apple-system, sans-serif" font-size="12">streaming; whisper.cpp and Voxtral cover batch locally.</text>

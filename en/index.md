@@ -10,7 +10,7 @@ title: IT / AI Project Manager Portfolio
 
 ## IT / AI Project Manager
 
-5 years leading projects in engineering and construction: budgets up to ₽130M, teams of up to 15, contractors, and hard deadlines. Now deliberately moving into IT/AI — I completed the IT Project Manager program at Yandex Practicum and run my own AI projects.
+5 years leading projects in industrial engineering and design: budgets up to ₽130M, teams of up to 15, contractors, and hard deadlines. Now deliberately moving into IT/AI — I completed the IT Project Manager program at Yandex Practicum and run my own AI projects.
 
 Focus: managing IT/AI projects — requirements, backlog, MVP, schedules, risks, and stakeholder communication. A technical background (Python, APIs, AI/LLM) lets me speak the same language as the engineering team.
 
@@ -18,9 +18,9 @@ Focus: managing IT/AI projects — requirements, backlog, MVP, schedules, risks,
 
 ## Project Management Experience
 
-**Project Manager / Lead Project Engineer (ГИП)** · engineering and construction · 2015–2025
+**Project Manager / Lead Project Engineer (ГИП)** · industrial engineering & design · 2015–2025
 
-- 5 years in a leadership role: ran industrial-construction projects — largest budget ₽130M+, teams of up to 15, 5+ contractors.
+- 5 years in a leadership role: ran industrial design-and-engineering projects — largest budget ₽130M+, teams of up to 15, 5+ contractors.
 - Delivered on time despite changing decision-makers and immature requirements — via weekly risk reviews and fast onboarding of new clients.
 - Built scope-change and stakeholder-management processes.
 - Earlier — Lead Project Engineer and acting roles in the same organization.
@@ -34,6 +34,7 @@ Planning, risks, deadlines, contractors, and stakeholders — these skills trans
 - **Yandex Practicum — IT Project Manager** (2026): the full IT-project cycle — from requirements gathering and prioritization to budgeting and defending the solution to the client (Jira, GanttPRO, Figma).
 - **Codecademy — Computer Science** (2025): algorithms, data structures, programming fundamentals.
 - Currently taking **Google IT Project Management** (in English). English — B2 (Upper-Intermediate).
+- **Information Systems & Technologies** (2008): a higher-education degree — the IT foundation the transition builds on.
 
 ---
 
@@ -78,6 +79,21 @@ A local offline service for reversible PII/PHI pseudonymization in RU/EN documen
 Stack: Python 3.12, FastAPI, Streamlit, Presidio, spaCy, Docker
 
 [Open project page](projects/local-pii-anonymizer.md) · [evidence](/evidence/pii-status-report.html)
+
+---
+
+### DemoTel KZ · Telegram support bot · demo, 2026
+
+A deterministic (no-LLM) Telegram support bot for a mobile operator, focused on safety-first routing and PII protection.
+
+- Designed the routing policy: 50 scenarios, 7 categories + operator handoff.
+- High-risk requests (SIM-swap, fraud, stolen phone) bypass L1 automation into Fraud / L2 and secure channels.
+- Deliberately chose no LLM in production for predictability, testability, and control; built PII masking (MSISDN, IIN, OTP, cards) before processing.
+- Quality control: 84/84 tests, 5/5 P0 blockers closed.
+
+Stack: Python, FastAPI, PostgreSQL, Telegram Bot API, Docker
+
+[Open project page](projects/telecombot.md) · [demo](/demos/telecombot.html)
 
 ---
 

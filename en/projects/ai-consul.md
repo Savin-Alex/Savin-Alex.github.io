@@ -101,4 +101,4 @@ One realized (R1), one mitigated (R2), two open (R3–R4) — honest about what 
 
 ## Stack
 
-Electron · TypeScript · React · Python · WhisperLiveKit (mlx-whisper / SimulStreaming) · Ollama · whisper.cpp (batch fallback)
+Electron · TypeScript · React · Python/WhisperLiveKit · Ollama · whisper.cpp (batch fallback)

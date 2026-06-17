@@ -101,4 +101,4 @@ Desktop-продукт, который даёт пользователю live-т
 
 ## Стек
 
-Electron · TypeScript · React · Python · WhisperLiveKit (mlx-whisper / SimulStreaming) · Ollama · whisper.cpp (batch fallback)
+Electron · TypeScript · React · Python/WhisperLiveKit · Ollama · whisper.cpp (batch fallback)

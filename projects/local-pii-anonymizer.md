@@ -10,7 +10,7 @@ title: Local PII Anonymizer
 
 <figure class="demo-figure">
 <iframe class="demo-frame demo-pii" src="{{ '/demos/local-pii-anonymizer.ru.html' | relative_url }}" title="Интерактивное демо: Local PII Anonymizer" loading="lazy"></iframe>
-<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Анимация: редакция данных, поток через каскад детекции и зашифрованный vault. <a href="{{ '/demos/local-pii-anonymizer.ru.html' | relative_url }}" target="_blank" rel="noopener">Открыть в полном окне ↗</a></figcaption>
+<figcaption style="font-size:.9em;color:#667085;margin-top:.4em;">Анимация: затирание данных, поток через каскад детекции и зашифрованный vault. <a href="{{ '/demos/local-pii-anonymizer.ru.html' | relative_url }}" target="_blank" rel="noopener">Открыть в полном окне ↗</a></figcaption>
 </figure>
 
 ## Паспорт проекта
@@ -19,7 +19,7 @@ title: Local PII Anonymizer
 |---|---|
 | **Проблема** | Готовые решения по анонимизации либо облачные (сама по себе утечка), либо однопроходные regex-фильтры — ломаются на смешанных RU/EN документах и не валидируют контрольные суммы. Для регулируемых отраслей этого мало. |
 | **Цель** | Local-first инструмент псевдонимизации PII/PHI: безопасно готовить чувствительные RU/EN документы для LLM/workflow, сохраняя обратимые маппинги под контролем оператора. |
-| **В scope** | Каскадная детекция (regex+checksum → Presidio/spaCy → Medical NER → LLM-fallback); 17+ типов сущностей; reversible pseudonymization + HIPAA Safe Harbor редакция; зашифрованный vault (AES-256-GCM) + tenant-изоляция; FastAPI/Streamlit/CLI/Docker; eval-харнесс + CI-гейт; audit trail. |
+| **В scope** | Каскадная детекция (regex+checksum → Presidio/spaCy → Medical NER → LLM-fallback); 17+ типов сущностей; reversible pseudonymization + HIPAA Safe Harbor обезличивание; зашифрованный vault (AES-256-GCM) + tenant-изоляция; FastAPI/Streamlit/CLI/Docker; eval-харнесс + CI-гейт; audit trail. |
 | **Вне scope** | Сертифицированный production-compliance; валидация на реальных клиентских документах; полный retention/deletion governance; production-деплой (TLS / secret store / append-only audit); Windows-валидация. |
 
 **Статус: Amber** — сильный технический прогресс; пока не одобрено для production-PII без финального security / privacy / legal review и deployment-контролей.
@@ -47,7 +47,7 @@ title: Local PII Anonymizer
 - Каскад: regex с checksum → Presidio (spaCy NER) → опциональный Medical NER (HuggingFace) → опциональный LLM-fallback (Ollama, через circuit breaker).
 - 17+ типов сущностей: ФИО, паспорт РФ (3 формата), ИНН/СНИЛС/ОГРН/БИК/КПП с валидацией, кадастровый номер, VIN, госномер, US SSN, UK NINO, MAC, SWIFT/BIC, AWS keys, JWT и т.д.
 - Reversible pseudonymization через pluggable Vault: InMemory / SQLite / Redis, sharded lock pool для concurrency без memory-leak.
-- HIPAA Safe Harbor mode — необратимая редакция дат (year-only) и возрастов больше 89 (`90+`), без записи в vault.
+- HIPAA Safe Harbor mode — необратимое обезличивание дат (year-only) и возрастов больше 89 (`90+`), без записи в vault.
 - Audit trail в structlog: 152-ФЗ / GDPR Art. 30 / HIPAA §164.312.
 
 ## Архитектура
