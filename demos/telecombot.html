@@ -136,6 +136,42 @@
       * { animation: none !important; transition: none !important; }
       .msg, .contact-card { opacity: 1; transform: none; }
     }
+
+    /* ===== Dark theme override (matches the portfolio dark site) ===== */
+    :root {
+      color-scheme: dark;
+      --ink: #e6edf3; --muted: #93a1ad; --line: #2a333d;
+      --paper: #0c1116; --paper-2: #0e141b; --panel: #161d26;
+      --ok-soft: rgba(31, 157, 87, 0.22); --danger-soft: rgba(214, 69, 44, 0.22);
+    }
+    body {
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, .05) 1px, transparent 1px),
+        linear-gradient(135deg, var(--paper) 0%, var(--paper-2) 100%);
+      background-size: 44px 44px, 44px 44px, 100% 100%;
+    }
+    .stage { background: rgba(22, 29, 38, .72); border-color: rgba(255, 255, 255, .10); box-shadow: 0 30px 80px -36px rgba(0, 0, 0, .6); }
+    .chat { background: linear-gradient(180deg, #11181f, #0e141b); }
+    .queue-pill { background: var(--panel); border-color: var(--line); }
+    .queue-pill.ok { color: #5fd99a; }
+    .queue-pill.fraud { color: #f3a08f; }
+    .msg.bot { background: var(--panel); border-color: var(--line); }
+    .msg .pii { background: rgba(255, 255, 255, .12); }
+    .typing { background: var(--panel); border-color: var(--line); }
+    .kbd { background: var(--panel); border-top-color: var(--line); }
+    .kbd span { background: rgba(34, 158, 217, .14); color: #8fcdec; border-color: rgba(34, 158, 217, .32); }
+    .step { background: #131a22; border-color: var(--line); }
+    .step.active { background: var(--panel); }
+    .step .ic, .step .riskbadge { background: #1c2530; }
+    .step .riskbadge.low { color: #5fd99a; }
+    .step .riskbadge.high { color: #f3a08f; }
+    .oc { background: #131a22; border-color: var(--line); }
+    .chip { background: var(--panel); border-color: var(--line); }
+    .chip .g { color: #5fd99a; }
+    .controls button { background: rgba(22, 29, 38, .9); border-color: var(--line); color: var(--ink); }
+    .panel { border-color: var(--line); }
+    .tag-demo { color: #5cc1ef; border-color: rgba(34, 158, 217, .5); }
   </style>
 </head>
 <body>
