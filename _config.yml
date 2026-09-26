@@ -1,0 +1,22 @@
+title: Alexander Savin
+description: "Портфолио IT Project Manager — Александр Савин. Веду сложные AI-проекты от идеи до релиза: понятный scope, проверенный результат и открытые риски."
+theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-relative-links
+
+# Navigation is handled by a custom language-aware header (_includes/header.html),
+# so header_pages is intentionally omitted.
+
+# Per-language <html lang> and meta description (RU default; EN under /en/)
+defaults:
+  - scope:
+      path: ""
+    values:
+      lang: ru
+  - scope:
+      path: "en"
+    values:
+      lang: en
+      description: "Portfolio of an IT Project Manager — Alexander Savin. I take complex AI projects from idea to release: clear scope, tested results, and risks in plain sight."

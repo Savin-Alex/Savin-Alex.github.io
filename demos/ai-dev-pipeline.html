@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DevPipe Portfolio Animation</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111315;
+      --panel: #191d20;
+      --panel-2: #20252a;
+      --line: #3d4850;
+      --text: #f0f4f5;
+      --muted: #aab6bd;
+      --green: #41c184;
+      --blue: #56a6e8;
+      --amber: #e5ad47;
+      --red: #ec6f66;
+      --violet: #a88be8;
+      --shadow: rgba(0, 0, 0, 0.36);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        var(--bg);
+      background-size: 42px 42px;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .stage {
+      width: min(1180px, 100%);
+      min-height: 680px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(17, 19, 21, 0.92);
+      box-shadow: 0 24px 80px var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: start;
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(25, 29, 32, 0.82);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1.08;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .control-button {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 8px;
+      background: #15191c;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .control-button:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+      background: #20262a;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 560px;
+    }
+
+    .canvas {
+      position: relative;
+      padding: 42px 34px 34px;
+      min-height: 560px;
+    }
+
+    .pipeline {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .lane-title {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .node {
+      position: relative;
+      min-height: 152px;
+      padding: 15px 12px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--panel);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      display: grid;
+      align-content: start;
+      gap: 9px;
+      min-width: 0;
+      overflow: hidden;
+      animation: cardFocus 9s ease-in-out infinite;
+    }
+
+    .node::after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      z-index: 2;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--muted);
+      border-right: 2px solid var(--muted);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .node:last-child::after {
+      display: none;
+    }
+
+    .node:nth-child(1) { animation-delay: 0s; }
+    .node:nth-child(2) { animation-delay: 1.2s; }
+    .node:nth-child(3) { animation-delay: 2.4s; }
+    .node:nth-child(4) { animation-delay: 3.6s; }
+    .node:nth-child(5) { animation-delay: 4.8s; }
+    .node:nth-child(6) { animation-delay: 6s; }
+
+    .node-index {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #08110d;
+      background: var(--green);
+    }
+
+    .node h2 {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.18;
+      overflow-wrap: anywhere;
+    }
+
+    .node p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .node.planner .node-index { background: var(--blue); }
+    .node.coder .node-index { background: var(--amber); }
+    .node.sandbox .node-index { background: var(--green); }
+    .node.review .node-index { background: var(--violet); color: #120d1f; }
+    .node.pr .node-index { background: #f4f6f6; }
+
+    .support-lanes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .support-lane {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(32, 37, 42, 0.92);
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .support-lane h3 {
+      margin: 0 0 11px;
+      font-size: 0.92rem;
+    }
+
+    .gate-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .gate {
+      min-height: 70px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(17, 19, 21, 0.52);
+      padding: 10px;
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .gate::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: var(--green);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: gateFill 9s linear infinite;
+    }
+
+    .gate:nth-child(2)::after { animation-delay: -1.2s; background: var(--amber); }
+    .gate:nth-child(3)::after { animation-delay: -2.4s; background: var(--blue); }
+    .gate:nth-child(4)::after { animation-delay: -3.6s; background: var(--violet); }
+
+    .gate strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 0.86rem;
+      overflow-wrap: anywhere;
+    }
+
+    .gate span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .side {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(25, 29, 32, 0.76);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .side-section {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--panel-2);
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .side-section h3 {
+      margin: 0 0 12px;
+      font-size: 0.92rem;
+    }
+
+    .metric {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .metric:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .metric b {
+      font-size: 1.1rem;
+      color: var(--green);
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.3;
+    }
+
+    .artifact-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .artifact-list li {
+      display: grid;
+      grid-template-columns: 10px 1fr;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.35;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .artifact-list li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      background: var(--blue);
+    }
+
+    .caption {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      max-width: 620px;
+      line-height: 1.5;
+    }
+
+    .paused * {
+      animation-play-state: paused !important;
+    }
+
+    .resetting *,
+    .resetting *::before,
+    .resetting *::after {
+      animation: none !important;
+    }
+
+    @keyframes cardFocus {
+      0%, 10%, 100% {
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      }
+      16%, 26% {
+        border-color: rgba(65, 193, 132, 0.72);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22), 0 0 0 3px rgba(65, 193, 132, 0.12);
+      }
+    }
+
+    @keyframes gateFill {
+      0%, 20% { transform: scaleX(0); }
+      45%, 70% { transform: scaleX(1); }
+      100% { transform: scaleX(0); }
+    }
+
+    @media (max-width: 1060px) {
+      .workflow-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .node:nth-child(3)::after {
+        display: none;
+      }
+
+      .node:nth-child(4)::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -18px;
+        width: calc(200% + 24px);
+        height: 1px;
+        border-top: 1px dashed rgba(170, 182, 189, 0.42);
+        transform: translateX(-50%);
+      }
+    }
+
+    @media (max-width: 920px) {
+      body {
+        padding: 12px;
+      }
+
+      .stage {
+        min-height: 920px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        padding: 22px 18px 16px;
+      }
+
+      h1 {
+        font-size: 1.55rem;
+      }
+
+      .controls {
+        justify-content: start;
+      }
+
+      .canvas {
+        min-height: 700px;
+        padding: 28px 18px 92px;
+      }
+
+      .support-lanes {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        grid-template-columns: 1fr;
+      }
+
+      .caption {
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .workflow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .node {
+        min-height: 82px;
+        grid-template-columns: 34px 1fr;
+        align-items: center;
+        padding: 12px;
+      }
+
+      .node::after {
+        right: auto;
+        left: 23px;
+        top: auto;
+        bottom: -14px;
+        transform: rotate(135deg);
+      }
+
+      .node:nth-child(3)::after {
+        display: block;
+      }
+
+      .node:nth-child(4)::before {
+        display: none;
+      }
+
+      .gate-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stage {
+        min-height: 1320px;
+      }
+
+      .canvas {
+        min-height: 990px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Portfolio case study</p>
+        <h1>Multi-Agent AI Development Pipeline</h1>
+        <p class="subtitle">
+          A governed GenAI delivery workflow that turns a Jira issue into tested code,
+          review evidence, and a controlled GitHub pull request.
+        </p>
+      </div>
+      <div class="controls" aria-label="Animation controls">
+        <button class="control-button" id="pauseButton" type="button" title="Pause animation" aria-label="Pause animation">II</button>
+        <button class="control-button" id="replayButton" type="button" title="Replay animation" aria-label="Replay animation">R</button>
+      </div>
+    </header>
+
+    <section class="content" aria-label="DevPipe workflow animation">
+      <div class="canvas">
+        <div class="pipeline" aria-label="Jira to pull request workflow">
+          <p class="lane-title">Delivery flow</p>
+          <div class="workflow-grid">
+            <article class="node">
+              <div class="node-index">1</div>
+              <div>
+                <h2>Jira Issue</h2>
+                <p>Backlog item with scope and acceptance criteria.</p>
+              </div>
+            </article>
+
+            <article class="node planner">
+              <div class="node-index">2</div>
+              <div>
+                <h2>Plan</h2>
+                <p>Implementation plan, file targets, and validation checks.</p>
+              </div>
+            </article>
+
+            <article class="node coder">
+              <div class="node-index">3</div>
+              <div>
+                <h2>Build</h2>
+                <p>Generated source changes, tests, and requirements.</p>
+              </div>
+            </article>
+
+            <article class="node sandbox">
+              <div class="node-index">4</div>
+              <div>
+                <h2>Validate</h2>
+                <p>Policy checks, secret scan, and Docker sandbox tests.</p>
+              </div>
+            </article>
+
+            <article class="node review">
+              <div class="node-index">5</div>
+              <div>
+                <h2>Review</h2>
+                <p>Approval based on diff summary and test evidence.</p>
+              </div>
+            </article>
+
+            <article class="node pr">
+              <div class="node-index">6</div>
+              <div>
+                <h2>PR</h2>
+                <p>GitHub branch and PR only after gates pass.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="support-lanes" aria-label="Governance and evidence layers">
+          <div class="support-lane">
+            <h3>Governance Gates</h3>
+            <div class="gate-grid">
+              <div class="gate">
+                <strong>Acceptance</strong>
+                <span>Scope, checks, and done criteria.</span>
+              </div>
+              <div class="gate">
+                <strong>Risk Control</strong>
+                <span>Secret scan, budget guard, locks.</span>
+              </div>
+              <div class="gate">
+                <strong>Quality</strong>
+                <span>Required tests and sandbox validation.</span>
+              </div>
+              <div class="gate">
+                <strong>Governance</strong>
+                <span>Dry-run vs controlled real-run.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="support-lane">
+            <h3>Evidence Output</h3>
+            <div class="gate-grid">
+              <div class="gate">
+                <strong>summary.json</strong>
+                <span>Status, failure envelope, approvals.</span>
+              </div>
+              <div class="gate">
+                <strong>Sandbox Logs</strong>
+                <span>stdout, stderr, test output.</span>
+              </div>
+              <div class="gate">
+                <strong>Metrics</strong>
+                <span>Stage time and estimated cost.</span>
+              </div>
+              <div class="gate">
+                <strong>History</strong>
+                <span>Issue-level artifact index.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="caption">
+          This animation is built for a Junior IT Project Manager portfolio:
+          it emphasizes workflow design, quality gates, risk management, measurable evidence,
+          and controlled delivery rather than raw code generation.
+        </p>
+      </div>
+
+      <aside class="side" aria-label="Project metrics and artifacts">
+        <section class="side-section">
+          <h3>Validation Snapshot</h3>
+          <div class="metric">
+            <b>55</b>
+            <span>automated tests passing in the local validation suite</span>
+          </div>
+          <div class="metric">
+            <b>11</b>
+            <span>issue groups with preserved run artifact history</span>
+          </div>
+          <div class="metric">
+            <b>150</b>
+            <span>run summaries captured as portfolio evidence</span>
+          </div>
+        </section>
+
+        <section class="side-section">
+          <h3>PM Artifacts</h3>
+          <ul class="artifact-list">
+            <li>Project charter and product backlog</li>
+            <li>Acceptance criteria and Definition of Done</li>
+            <li>Risk register and rollback playbook</li>
+            <li>Metrics guide and retrospective</li>
+            <li>Evidence package and demo cases</li>
+          </ul>
+        </section>
+
+        <section class="side-section">
+          <h3>Outcome</h3>
+          <ul class="artifact-list">
+            <li>Repeatable Jira-to-PR workflow</li>
+            <li>Dry-run and controlled real-run split</li>
+            <li>Audit-ready run evidence</li>
+            <li>Governed GenAI delivery case study</li>
+          </ul>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const pauseButton = document.getElementById("pauseButton");
+    const replayButton = document.getElementById("replayButton");
+
+    pauseButton.addEventListener("click", () => {
+      const paused = stage.classList.toggle("paused");
+      pauseButton.textContent = paused ? ">" : "II";
+      pauseButton.title = paused ? "Resume animation" : "Pause animation";
+      pauseButton.setAttribute("aria-label", paused ? "Resume animation" : "Pause animation");
+    });
+
+    replayButton.addEventListener("click", () => {
+      stage.classList.remove("paused");
+      pauseButton.textContent = "II";
+      pauseButton.title = "Pause animation";
+      pauseButton.setAttribute("aria-label", "Pause animation");
+      stage.classList.add("resetting");
+      void stage.offsetHeight;
+      stage.classList.remove("resetting");
+    });
+  </script>
+</body>
+</html>
