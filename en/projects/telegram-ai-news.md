@@ -8,7 +8,7 @@ title: Telegram AI News — governed LLM content pipeline
 
 An LLM pipeline for «ИИнтересные новости», a Russian-language Telegram channel about AI. It reads news sources, selects the stories that matter and writes short posts for people who build products with AI.
 
-<p><b>Live channel:</b> <a href="https://t.me/ainews24by7" target="_blank" rel="noopener">ИИнтересные новости — t.me/ainews24by7</a> · 192 subscribers as of 3 November 2026</p>
+<p><b>Live channel:</b> <a href="https://t.me/ainews24by7" target="_blank" rel="noopener">ИИнтересные новости — t.me/ainews24by7</a> · 1,600+ subscribers as of 14 November 2026</p>
 
 ## The challenge
 
@@ -36,7 +36,7 @@ AI news channels often repost press releases or publish everything. People who b
 
 **The channel runs unattended: the pipeline selects news, writes posts and publishes them automatically.**
 
-- 192 subscribers as of 3 November 2026.
+- 1,600+ subscribers as of 14 November 2026.
 - The pipeline checks the enabled sources every 15 minutes. 56 sources are configured, including blogs of Russian AI companies; only top-trust sources are enabled today.
 - The main hypothesis, that readers value the filter more than the volume, is not tested yet.
 
